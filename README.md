@@ -1,117 +1,151 @@
-# CODEXA 🚀
+<div align="center">
 
-## Download 📲
-Ready to level up your coding journey? Download the latest version of the Codexa app now.
+<br/>
 
-[Download APK](https://github.com/Deepanshu-ui-dev/Codexa-App/releases/download/Codexa/Codexa-release.apk)
+# ⚡ CODEXA
 
-> Note: You may need to enable installation from **Unknown Sources** in your Android settings.
+### Your Ultimate Coding Analytics Companion
+
+*Track · Visualize · Dominate*
+
+<br/>
+
+[![Download APK](https://img.shields.io/badge/⬇️%20Download%20APK-Latest%20Release-brightgreen?style=for-the-badge)](https://github.com/Deepanshu-ui-dev/Codexa-App/releases/download/Codexa/Codexa-release.apk)
+&nbsp;
+![Platform](https://img.shields.io/badge/Platform-Android-blue?style=for-the-badge&logo=android)
+&nbsp;
+![Built With](https://img.shields.io/badge/Built%20With-Flutter-02569B?style=for-the-badge&logo=flutter)
+
+<br/>
+
+> 📌 **Note:** Enable **Unknown Sources** in your Android settings before installing.
+
+<br/>
 
 ---
 
-## Your Ultimate Coding Analytics Companion!
+</div>
 
-**Features • Screenshots • Download • Tech Stack • Contact**
+## 📚 Table of Contents
+
+- [Overview](#-overview)
+- [Features](#-features)
+- [Screenshots](#-screenshots)
+- [Tech Stack](#-tech-stack)
+- [Contact](#-contact--feedback)
 
 ---
 
-## Screenshots 📸
+## 📝 Overview
 
-<div align="center">
-  <img src="images/IMG_20260315_215040_462.jpg.jpeg" width="220" alt="Screenshot 3" />
-  <img src="images/IMG_20260315_215039_964.jpg.jpeg" width="220" alt="Screenshot 1" />
-</div>
+**Codexa** is a modern, beautifully crafted coding analytics app built for developers and competitive programmers.
 
-<div align="center">
-  <img src="images/IMG_20260315_215040_351.jpg.jpeg" width="220" alt="Screenshot 2" />
-  <img src="images/IMG_20260315_215040_515.jpg.jpeg" width="220" alt="Screenshot 4" />
-</div>
+> Monitor your coding journey — solved problems, contest growth, submissions, streaks, and profile insights — all from a single polished dashboard.
 
-<div align="center">
-  <img src="images/IMG_20260315_215040_525.jpg.jpeg" width="220" alt="Screenshot 5" />
-  <img src="images/IMG_20260315_215040_831.jpg.jpeg" width="220" alt="Screenshot 6" />
-</div>
-
-<div align="center">
-  <img src="images/IMG_20260315_215040_940.jpg.jpeg" width="220" alt="Screenshot 7" />
-  <img src="images/IMG_20260315_221034_645.jpg.jpeg" width="220" alt="Screenshot 8" />
-</div>
-
-<div align="center">
-  <img src="images/IMG_20260315_221034_684.jpg.jpeg" width="220" alt="Screenshot 9" />
-  <img src="images/IMG_20260315_221034_842.jpg.jpeg" width="220" alt="Screenshot 10" />
-</div>
-
-<div align="center">
-  <img src="images/IMG_20260315_221034_943.jpg.jpeg" width="220" alt="Screenshot 11" />
-  <img src="images/IMG_20260315_221035_241.jpg.jpeg" width="220" alt="Screenshot 12" />
-</div>
+Whether you're a beginner tracking your first 100 problems or a seasoned coder optimizing for contest ratings, Codexa gives you the clarity and motivation to level up.
 
 ---
 
-## Overview 📝
+## ✨ Features
 
-**Codexa** is a modern coding analytics app built for developers and competitive programmers.
-It helps you track and visualize your performance across multiple platforms in one place.
-
-With Codexa, you can monitor solved problems, contest growth, submissions, streaks, and profile insights through a polished and intuitive dashboard experience.
-
----
-
-## Features ✨
-
-- 📊 **Unified Coding Stats**: Track your coding performance across platforms like LeetCode, CodeChef, Codeforces, GitHub, and HackerRank.
-- 📈 **Interactive Dashboard**: View trends for solved problems, contest rating progress, and activity heatmaps.
-- 🔄 **Smart Syncing**: Keep your analytics updated with fast refresh and cached data support.
-- 🎯 **Platform Insights**: Dive into platform-specific details including rankings, streaks, badges, submissions, and repositories.
-- 🧩 **Projects Showcase**: Highlight your GitHub repositories with stars, forks, issues, topics, and recent activity.
-- 👤 **Developer Portfolio Profile**: Maintain your profile, skills, experience, education, and social links in one place.
-- 🎨 **Beautiful UI/UX**: Built with glassmorphism-inspired design, responsive layouts, and smooth animations.
-- 🔔 **In-App Notifications**: Stay informed with reminders and update alerts.
+| Feature | Description |
+|---|---|
+| 📊 **Unified Coding Stats** | Track performance across LeetCode, CodeChef, Codeforces, GitHub & HackerRank |
+| 📈 **Interactive Dashboard** | View trends for solved problems, contest ratings & activity heatmaps |
+| 🔄 **Smart Syncing** | Fast refresh with cached data for smooth, up-to-date analytics |
+| 🎯 **Platform Insights** | Rankings, streaks, badges, submissions & repos — per platform |
+| 🧩 **Projects Showcase** | Highlight GitHub repos with stars, forks, issues, topics & activity |
+| 👤 **Developer Portfolio** | Skills, experience, education & social links — all in one place |
+| 🎨 **Beautiful UI/UX** | Glassmorphism design, responsive layouts & smooth animations |
+| 🔔 **In-App Notifications** | Reminders, update alerts & smart nudges to keep you on track |
 
 ---
 
-## Tech Stack 💻
-
-This application is built with a robust modern stack for a high-quality user experience.
-
-### Core Framework
-- Flutter
-- Dart
-
-### State Management & Routing
-- Flutter Riverpod
-- GoRouter
-
-### Backend & Data
-- Supabase
-- Shared Preferences
-- HTTP
-
-### UI & Design
-- Google Fonts
-- FL Chart
-- Custom Glassmorphism Components
-- Animated UI Widgets
-
-### Utilities
-- URL Launcher
-- Image Picker
-- File Picker
-- Local Notifications
-
----
-
-## Contact & Feedback 📬
-
-Have suggestions, bug reports, or collaboration ideas? Feel free to reach out.
-
-- **Your Name:** Deepanshu Kaushik
-- **Email:** imdeepanshu4work@gmail.com
+## 📸 Screenshots
 
 <div align="center">
-  <b>Developed with ❤️ by Deepanshu Kaushik</b>
+
+<table>
+  <tr>
+    <td align="center"><img src="images/IMG_20260315_215040_462.jpg.jpeg" width="200" alt="Dashboard"/><br/><sub>Dashboard</sub></td>
+    <td align="center"><img src="images/IMG_20260315_215039_964.jpg.jpeg" width="200" alt="Home"/><br/><sub>Home</sub></td>
+    <td align="center"><img src="images/IMG_20260315_215040_351.jpg.jpeg" width="200" alt="Stats Overview"/><br/><sub>Stats Overview</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/IMG_20260315_215040_515.jpg.jpeg" width="200" alt="Platform Insights"/><br/><sub>Platform Insights</sub></td>
+    <td align="center"><img src="images/IMG_20260315_215040_525.jpg.jpeg" width="200" alt="Contest Ratings"/><br/><sub>Contest Ratings</sub></td>
+    <td align="center"><img src="images/IMG_20260315_215040_831.jpg.jpeg" width="200" alt="Activity Heatmap"/><br/><sub>Activity Heatmap</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/IMG_20260315_215040_940.jpg.jpeg" width="200" alt="GitHub Repos"/><br/><sub>GitHub Repos</sub></td>
+    <td align="center"><img src="images/IMG_20260315_221034_645.jpg.jpeg" width="200" alt="Profile"/><br/><sub>Developer Profile</sub></td>
+    <td align="center"><img src="images/IMG_20260315_221034_684.jpg.jpeg" width="200" alt="Notifications"/><br/><sub>Notifications</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/IMG_20260315_221034_842.jpg.jpeg" width="200" alt="Portfolio"/><br/><sub>Portfolio</sub></td>
+    <td align="center"><img src="images/IMG_20260315_221034_943.jpg.jpeg" width="200" alt="Streaks"/><br/><sub>Streaks</sub></td>
+    <td align="center"><img src="images/IMG_20260315_221035_241.jpg.jpeg" width="200" alt="Settings"/><br/><sub>Settings</sub></td>
+  </tr>
+</table>
+
 </div>
 
 ---
 
+## 💻 Tech Stack
+
+<div align="center">
+
+### 🧱 Core Framework
+![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white)
+![Dart](https://img.shields.io/badge/Dart-0175C2?style=flat-square&logo=dart&logoColor=white)
+
+### 🔀 State Management & Routing
+![Riverpod](https://img.shields.io/badge/Riverpod-00B4AB?style=flat-square)
+![GoRouter](https://img.shields.io/badge/GoRouter-FF6B35?style=flat-square)
+
+### 🗄️ Backend & Data
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)
+![SharedPrefs](https://img.shields.io/badge/Shared%20Preferences-FF9800?style=flat-square)
+![HTTP](https://img.shields.io/badge/HTTP-0078D4?style=flat-square)
+
+### 🎨 UI & Design
+![Google Fonts](https://img.shields.io/badge/Google%20Fonts-4285F4?style=flat-square&logo=google&logoColor=white)
+![FL Chart](https://img.shields.io/badge/FL%20Chart-E91E63?style=flat-square)
+![Glassmorphism](https://img.shields.io/badge/Glassmorphism%20UI-9C27B0?style=flat-square)
+
+### 🛠️ Utilities
+![URL Launcher](https://img.shields.io/badge/URL%20Launcher-607D8B?style=flat-square)
+![Image Picker](https://img.shields.io/badge/Image%20Picker-4CAF50?style=flat-square)
+![Notifications](https://img.shields.io/badge/Local%20Notifications-F44336?style=flat-square)
+
+</div>
+
+---
+
+## 📬 Contact & Feedback
+
+Have suggestions, bug reports, or collaboration ideas? I'd love to hear from you!
+
+| | |
+|---|---|
+| 👤 **Developer** | Deepanshu Kaushik |
+| 📧 **Email** | [imdeepanshu4work@gmail.com](mailto:imdeepanshu4work@gmail.com) |
+
+<br/>
+
+---
+
+<div align="center">
+
+### ⭐ If you find Codexa useful, consider starring the repo!
+
+*It motivates continued development and helps others discover the project.*
+
+<br/>
+
+**Developed with ❤️ by [Deepanshu Kaushik](mailto:imdeepanshu4work@gmail.com)**
+
+<br/>
+
+</div>
