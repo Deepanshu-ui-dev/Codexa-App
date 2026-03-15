@@ -3,7 +3,7 @@
 ## Download 📲
 Ready to level up your coding journey? Download the latest version of the Codexa app now.
 
-[Download APK](https://drive.google.com/file/d/1SeKytM9kiTQrD3Z93GQffQoqpWqlnCbx/view?usp=sharing)
+[Download APK](https://drive.google.com/file/d/1VCF1Q99WgmGcewkyQ1oqPyztN7FeT0Y4/view?usp=sharing)
 
 > Note: You may need to enable installation from **Unknown Sources** in your Android settings.
 
