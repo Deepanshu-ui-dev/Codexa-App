@@ -2,7 +2,7 @@
 
 <br/>
 
-# ⚡ CODEXA
+# CODEXA
 
 ### Your Ultimate Coding Analytics Companion
 
@@ -67,24 +67,27 @@ Whether you're a beginner tracking your first 100 problems or a seasoned coder o
 
 <table>
   <tr>
-    <td align="center"><img src="images/IMG_20260315_215040_462.jpg.jpeg" width="200" alt="Dashboard"/><br/><sub>Dashboard</sub></td>
-    <td align="center"><img src="images/IMG_20260315_215039_964.jpg.jpeg" width="200" alt="Home"/><br/><sub>Home</sub></td>
-    <td align="center"><img src="images/IMG_20260315_215040_351.jpg.jpeg" width="200" alt="Stats Overview"/><br/><sub>Stats Overview</sub></td>
+    <td width="33%" align="center"><img src="images/IMG_20260315_215040_462.jpg.jpeg" width="200"/></td>
+    <td width="33%" align="center"><img src="images/IMG_20260315_215039_964.jpg.jpeg" width="200"/></td>
+    <td width="33%" align="center"><img src="images/IMG_20260315_215040_351.jpg.jpeg" width="200"/></td>
   </tr>
+  <tr><td colspan="3"><br/></td></tr>
   <tr>
-    <td align="center"><img src="images/IMG_20260315_215040_515.jpg.jpeg" width="200" alt="Platform Insights"/><br/><sub>Platform Insights</sub></td>
-    <td align="center"><img src="images/IMG_20260315_215040_525.jpg.jpeg" width="200" alt="Contest Ratings"/><br/><sub>Contest Ratings</sub></td>
-    <td align="center"><img src="images/IMG_20260315_215040_831.jpg.jpeg" width="200" alt="Activity Heatmap"/><br/><sub>Activity Heatmap</sub></td>
+    <td width="33%" align="center"><img src="images/IMG_20260315_215040_515.jpg.jpeg" width="200"/></td>
+    <td width="33%" align="center"><img src="images/IMG_20260315_215040_525.jpg.jpeg" width="200"/></td>
+    <td width="33%" align="center"><img src="images/IMG_20260315_215040_831.jpg.jpeg" width="200"/></td>
   </tr>
+  <tr><td colspan="3"><br/></td></tr>
   <tr>
-    <td align="center"><img src="images/IMG_20260315_215040_940.jpg.jpeg" width="200" alt="GitHub Repos"/><br/><sub>GitHub Repos</sub></td>
-    <td align="center"><img src="images/IMG_20260315_221034_645.jpg.jpeg" width="200" alt="Profile"/><br/><sub>Developer Profile</sub></td>
-    <td align="center"><img src="images/IMG_20260315_221034_684.jpg.jpeg" width="200" alt="Notifications"/><br/><sub>Notifications</sub></td>
+    <td width="33%" align="center"><img src="images/IMG_20260315_215040_940.jpg.jpeg" width="200"/></td>
+    <td width="33%" align="center"><img src="images/IMG_20260315_221034_645.jpg.jpeg" width="200"/></td>
+    <td width="33%" align="center"><img src="images/IMG_20260315_221034_684.jpg.jpeg" width="200"/></td>
   </tr>
+  <tr><td colspan="3"><br/></td></tr>
   <tr>
-    <td align="center"><img src="images/IMG_20260315_221034_842.jpg.jpeg" width="200" alt="Portfolio"/><br/><sub>Portfolio</sub></td>
-    <td align="center"><img src="images/IMG_20260315_221034_943.jpg.jpeg" width="200" alt="Streaks"/><br/><sub>Streaks</sub></td>
-    <td align="center"><img src="images/IMG_20260315_221035_241.jpg.jpeg" width="200" alt="Settings"/><br/><sub>Settings</sub></td>
+    <td width="33%" align="center"><img src="images/IMG_20260315_221034_842.jpg.jpeg" width="200"/></td>
+    <td width="33%" align="center"><img src="images/IMG_20260315_221034_943.jpg.jpeg" width="200"/></td>
+    <td width="33%" align="center"><img src="images/IMG_20260315_221035_241.jpg.jpeg" width="200"/></td>
   </tr>
 </table>
 
