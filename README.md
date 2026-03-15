@@ -3,7 +3,7 @@
 ## Download 📲
 Ready to level up your coding journey? Download the latest version of the Codexa app now.
 
-[Download APK](https://drive.google.com/file/d/1L2H3TxzVdMwWpLDtMYXSYZi6pKT5j-jx/view?usp=sharing)
+[Download APK](https://github.com/Deepanshu-ui-dev/Codexa-App/releases/download/Codexa/Codexa-release.apk)
 
 > Note: You may need to enable installation from **Unknown Sources** in your Android settings.
 
