@@ -20,6 +20,9 @@ Ready to level up your coding journey? Download the latest version of the Codexa
 <div align="center">
   <img src="images/IMG_20260315_215040_462.jpg.jpeg" width="220" alt="Screenshot 3" />
   <img src="images/IMG_20260315_215039_964.jpg.jpeg" width="220" alt="Screenshot 1" />
+</div>
+
+<div align="center">
   <img src="images/IMG_20260315_215040_351.jpg.jpeg" width="220" alt="Screenshot 2" />
   <img src="images/IMG_20260315_215040_515.jpg.jpeg" width="220" alt="Screenshot 4" />
 </div>
@@ -27,6 +30,9 @@ Ready to level up your coding journey? Download the latest version of the Codexa
 <div align="center">
   <img src="images/IMG_20260315_215040_525.jpg.jpeg" width="220" alt="Screenshot 5" />
   <img src="images/IMG_20260315_215040_831.jpg.jpeg" width="220" alt="Screenshot 6" />
+</div>
+
+<div align="center">
   <img src="images/IMG_20260315_215040_940.jpg.jpeg" width="220" alt="Screenshot 7" />
   <img src="images/IMG_20260315_221034_645.jpg.jpeg" width="220" alt="Screenshot 8" />
 </div>
@@ -34,6 +40,9 @@ Ready to level up your coding journey? Download the latest version of the Codexa
 <div align="center">
   <img src="images/IMG_20260315_221034_684.jpg.jpeg" width="220" alt="Screenshot 9" />
   <img src="images/IMG_20260315_221034_842.jpg.jpeg" width="220" alt="Screenshot 10" />
+</div>
+
+<div align="center">
   <img src="images/IMG_20260315_221034_943.jpg.jpeg" width="220" alt="Screenshot 11" />
   <img src="images/IMG_20260315_221035_241.jpg.jpeg" width="220" alt="Screenshot 12" />
 </div>
@@ -100,7 +109,9 @@ Have suggestions, bug reports, or collaboration ideas? Feel free to reach out.
 - **Your Name:** Deepanshu Kaushik
 - **Email:** imdeepanshu4work@gmail.com
 
-Developed with ❤️ by **Deepanshu Kaushik**
+<div align="center">
+  <b>Developed with ❤️ by Deepanshu Kaushik</b>
+</div>
 
 ---
 
