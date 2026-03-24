@@ -10,7 +10,7 @@
 
 <br/>
 
-[![Download APK](https://img.shields.io/badge/⬇️%20Download%20APK-Latest%20Release-brightgreen?style=for-the-badge)](https://github.com/Deepanshu-ui-dev/Codexa-App/releases/download/Codexa/Codexa1.0.2.apk
+[![Download APK](https://img.shields.io/badge/⬇️%20Download%20APK-Latest%20Release-brightgreen?style=for-the-badge)](https://github.com/Deepanshu-ui-dev/Codexa-App/releases/download/Codexa/Codexa1.0.3.apk
 )
 &nbsp;
 ![Platform](https://img.shields.io/badge/Platform-Android-blue?style=for-the-badge&logo=android)
