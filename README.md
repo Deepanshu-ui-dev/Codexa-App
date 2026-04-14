@@ -1,109 +1,121 @@
-# Codexa 🚀
+<div align="center">
 
-## Your Ultimate Competitive Programming Companion!
+<img src="assets/images/Codexa.png" width="88" height="88" style="border-radius: 20px" alt="Codexa Logo" />
 
-**Empower your competitive programming journey — Track • Analyze • Improve**
+# Codexa
 
-Codexa is a comprehensive mobile application designed to help competitive programmers track their progress across multiple platforms in one beautifully designed dashboard.
+**Your unified competitive programming dashboard.**
 
----
+Track progress · Analyze performance · Stay consistent
 
-## 🎯 Download & Get Started
+[![Version](https://img.shields.io/badge/version-1.1.1-4D7EFF?style=flat-square)](https://github.com/Deepanshu-ui-dev/Codexa-App/releases)
+[![Platform](https://img.shields.io/badge/platform-Android-brightgreen?style=flat-square&logo=android)](https://ryzxalaibcwffoamznrg.supabase.co/storage/v1/object/public/app-releases/Codexa-1.1.1.apk)
+[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?style=flat-square&logo=flutter)](https://flutter.dev)
+[![License](https://img.shields.io/badge/license-MIT-gray?style=flat-square)](LICENSE)
 
-### Ready to track your coding journey?
-**[📲 Download APK](https://ryzxalaibcwffoamznrg.supabase.co/storage/v1/object/public/app-releases/Codexa-1.1.1.apk)**
+<br/>
 
-> **Note:** Enable "Install from unknown sources" in your browser/device settings before installing the APK.
+[**Download APK**](https://ryzxalaibcwffoamznrg.supabase.co/storage/v1/object/public/app-releases/Codexa-1.1.1.apk) · [**Web App**](https://codexa-app-delta.vercel.app) · [**Developer Portfolio**](https://deepanshux.tech)
 
----
-
-## 📸 Screenshots
-
-### Application Showcase
-![Screenshot 1](images/IMG_20260315_215039_964.jpg.jpeg)
-![Screenshot 2](images/IMG_20260315_215040_351.jpg.jpeg)
-![Screenshot 3](images/IMG_20260315_215040_462.jpg.jpeg)
-![Screenshot 4](images/IMG_20260315_215040_515.jpg.jpeg)
-![Screenshot 5](images/IMG_20260315_215040_525.jpg.jpeg)
-![Screenshot 6](images/IMG_20260315_215040_831.jpg.jpeg)
+</div>
 
 ---
 
-## 📝 Overview
+## Overview
 
-Codexa is built for competitive programmers who want to master their craft. With Codexa, you can effortlessly monitor your achievements, statistics, and rankings all in one place.
+Codexa is a Flutter-based mobile app that aggregates your competitive programming stats from six platforms into a single, clean dashboard. Instead of switching between LeetCode, Codeforces, CodeChef, HackerRank, GeeksforGeeks, and GitHub, you get everything — ratings, submission history, contest performance, and streaks — in one place.
 
----
-
-## ✨ Key Features
-
-✅ **📊 Multi-Platform Tracking** — LeetCode, Codeforces, CodeChef, HackerRank, GitHub, GeeksforGeeks
-✅ **📈 Progress Analytics** — Visual graphs and detailed statistics
-✅ **⚡ Real-time Sync** — Instant updates from all platforms
-✅ **🎯 Personalized Goals** — Set and track your targets
-✅ **🏆 Leaderboards** — Compare with other programmers
-✅ **📱 Offline Support** — Access data without internet
-✅ **🎨 Beautiful UI/UX** — Modern, clean interface with animations
+Built for programmers preparing for placements, grinding DSA, or competing seriously.
 
 ---
 
-## 🛠 Tech Stack
+## Screenshots
 
-- **Framework:** Flutter & Dart
-- **Backend:** Firebase & Cloud Firestore
-- **APIs:** REST integration with coding platforms
-- **UI:** Material Design with smooth animations
-- **Storage:** Shared Preferences & local caching
-
----
-
-## 📱 Platform Support
-
-| Platform | Status | Version |
-|----------|--------|---------|
-| Android  | ✅ Active | 1.1.1+ |
-| iOS      | 🔄 Coming Soon | TBD |
-| Web      | ✅ Live | [Visit Web](https://codexa-app-delta.vercel.app) |
-
----
-
-## 🔧 Installation
-
-1. Download APK from link above
-2. Enable "Install from unknown sources"
-3. Tap to install
-4. Grant permissions
-5. Open & start tracking!
+<div align="center">
+<table>
+  <tr>
+    <td><img src="images/IMG_20260315_215039_964.jpg.jpeg" width="160"/></td>
+    <td><img src="images/IMG_20260315_215040_351.jpg.jpeg" width="160"/></td>
+    <td><img src="images/IMG_20260315_215040_462.jpg.jpeg" width="160"/></td>
+  </tr>
+  <tr>
+    <td><img src="images/IMG_20260315_215040_515.jpg.jpeg" width="160"/></td>
+    <td><img src="images/IMG_20260315_215040_525.jpg.jpeg" width="160"/></td>
+    <td><img src="images/IMG_20260315_215040_831.jpg.jpeg" width="160"/></td>
+  </tr>
+</table>
+</div>
 
 ---
 
-## 🚀 Features
+## Features
 
-- Track coding stats across 6+ platforms
-- Real-time progress analytics
-- Goal setting and tracking
-- Competitive leaderboards
-- Offline data access
-- Beautiful, responsive UI
-
----
-
-## 📞 Contact
-
-**Developer:** Deepanshu Kaushik  
-**Email:** deepanshuk@example.com  
-**Portfolio:** [deepanshux.tech](https://deepanshux.tech)  
-**GitHub:** [Deepanshu-ui-dev](https://github.com/Deepanshu-ui-dev)  
-**LinkedIn:** [deepanshux](https://linkedin.com/in/deepanshux)
+| Feature | Description |
+|---|---|
+| **Multi-platform tracking** | LeetCode, Codeforces, CodeChef, HackerRank, GeeksforGeeks, GitHub |
+| **Progress analytics** | Visual graphs, submission heatmaps, rating history |
+| **Real-time sync** | Live updates with optimized caching |
+| **Contest tracking** | Upcoming and past contests across all platforms |
+| **Goal setting** | Set personal targets and monitor progress |
+| **Leaderboards** | See how you rank against other Codexa users |
+| **Offline support** | Core data accessible without an internet connection |
+| **Developer profile** | Shareable card showcasing your stats and skills |
 
 ---
 
-## 📄 License
+## Tech Stack
 
-MIT License - See LICENSE file for details
+| Layer | Technologies |
+|---|---|
+| **Framework** | Flutter · Dart |
+| **State management** | Provider |
+| **Backend** | Firebase · Cloud Firestore |
+| **APIs** | REST integrations with all six platforms |
+| **UI** | Material Design · Google Fonts · FL Chart |
+| **Storage** | Shared Preferences · local caching |
+| **Utilities** | URL Launcher · Local Notifications |
 
 ---
 
-**Made with ❤️ for competitive programmers everywhere**
+## Platform Support
 
-⭐ Star this repo if Codexa helps you! | 📢 Share with your coding friends | 🐞 Report bugs to improve
+| Platform | Status | Notes |
+|---|---|---|
+| Android | ✅ Live | v1.1.1+ |
+| Web | ✅ Live | [codexa-app-delta.vercel.app](https://codexa-app-delta.vercel.app) |
+| iOS | 🔄 Planned | TBD |
+
+---
+
+## Installation
+
+> **Before you start:** Go to **Settings → Apps → Special app access → Install unknown apps** and enable installs from your browser or file manager.
+
+1. Tap [**Download APK**](https://ryzxalaibcwffoamznrg.supabase.co/storage/v1/object/public/app-releases/Codexa-1.1.1.apk)
+2. Open the downloaded file and tap **Install**
+3. Grant the requested permissions
+4. Launch Codexa and add your platform usernames
+5. Your stats load automatically — start tracking
+
+---
+
+## Developer
+
+**Deepanshu Kaushik**
+
+[deepanshux.tech](https://deepanshux.tech) · [GitHub](https://github.com/Deepanshu-ui-dev) · [LinkedIn](https://linkedin.com/in/deepanshux)
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE) for details.
+
+---
+
+<div align="center">
+
+Made with care for competitive programmers everywhere.  
+If Codexa helps you, consider starring the repo — it helps others find it.
+
+</div>
