@@ -1,11 +1,11 @@
 {
-    "name": "codexa_landing_page",
-    "short_name": "codexa_landing_page",
+    "name": "Codexa - APK Distribution",
+    "short_name": "Codexa",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#000000",
+    "theme_color": "#000000",
+    "description": "Codexa - Your APK distribution platform for developers.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
