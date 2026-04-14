@@ -22,6 +22,13 @@ const _kTextSecondary = Color(0x70FFFFFF);
 const _kTextMuted     = Color(0x45FFFFFF);
 const _kTextHint      = Color(0x28FFFFFF);
 
+// ─── Breakpoints ─────────────────────────────────────────────────────────────
+class _BP {
+  static bool isMobile(double w)  => w < 480;
+  static bool isTablet(double w)  => w >= 480 && w < 900;
+  static bool isDesktop(double w) => w >= 900;
+}
+
 Future<void> _launch(String url) async {
   final uri = Uri.tryParse(url);
   if (uri != null) await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -47,9 +54,7 @@ class LandingScreen extends StatelessWidget {
         child: Column(
           children: [
             _NavBar(onPortfolioTap: () => _launch(AppLinks.developerWebsiteUrl)),
-            _HeroSection(
-              onDownload: () => _launch(AppLinks.androidDownloadUrl),
-            ),
+            _HeroSection(onDownload: () => _launch(AppLinks.androidDownloadUrl)),
             const _PlatformsSection(),
             _Footer(
               onGitHubTap: () => _launch(AppLinks.githubRepoUrl),
@@ -69,14 +74,17 @@ class _NavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+    final hPad = _BP.isMobile(w) ? 16.0 : 28.0;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+      padding: EdgeInsets.symmetric(horizontal: hPad, vertical: 16),
       decoration: const BoxDecoration(
         border: Border(bottom: BorderSide(color: _kBorderFaint)),
       ),
       child: Row(
         children: [
-          const _Logo(iconSize: 30),
+          _Logo(iconSize: _BP.isMobile(w) ? 26.0 : 30.0),
           const Spacer(),
           _GhostButton(label: 'Developer ↗', onTap: onPortfolioTap),
         ],
@@ -105,10 +113,10 @@ class _Logo extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 10),
-        const Text(
+        Text(
           'Codexa',
           style: TextStyle(
-            fontSize: 15,
+            fontSize: iconSize * 0.5,
             fontWeight: FontWeight.w600,
             letterSpacing: -0.4,
             color: _kTextPrimary,
@@ -172,9 +180,17 @@ class _HeroSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
+    final isMobile  = _BP.isMobile(w);
+    final isDesktop = _BP.isDesktop(w);
+
+    final double hPad     = isMobile ? 20.0 : 28.0;
+    final double topPad   = isMobile ? 52.0 : isDesktop ? 100.0 : 80.0;
+    final double titleSize = isMobile ? 34.0 : isDesktop ? 64.0 : 48.0;
+    final double subtitleSize = isMobile ? 14.0 : 15.0;
+    final double maxSubtitleWidth = isMobile ? double.infinity : 420.0;
+
     return Padding(
-      // top 80 preserved; bottom reduced to 28 — just enough breath before the divider
-      padding: const EdgeInsets.fromLTRB(28, 80, 28, 28),
+      padding: EdgeInsets.fromLTRB(hPad, topPad, hPad, 28),
       child: Column(
         children: [
           _VersionBadge(),
@@ -183,9 +199,9 @@ class _HeroSection extends StatelessWidget {
             textAlign: TextAlign.center,
             text: TextSpan(
               style: TextStyle(
-                fontSize: w > 600 ? 56 : 40,
+                fontSize: titleSize,
                 fontWeight: FontWeight.w600,
-                letterSpacing: -2.5,
+                letterSpacing: isMobile ? -1.5 : -2.5,
                 height: 1.05,
               ),
               children: const [
@@ -204,24 +220,25 @@ class _HeroSection extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 14),
           ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 380),
-            child: const Text(
+            constraints: BoxConstraints(maxWidth: maxSubtitleWidth),
+            child: Text(
               'Track LeetCode, Codeforces, CodeChef and more — one clean dashboard, zero clutter.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 15,
+                fontSize: subtitleSize,
                 color: _kTextMuted,
                 height: 1.75,
                 fontWeight: FontWeight.w400,
               ),
             ),
           ),
-          const SizedBox(height: 34),
+          SizedBox(height: isMobile ? 28.0 : 34.0),
           _DownloadButton(onTap: onDownload),
           const SizedBox(height: 14),
-          const _InstallHint(),
+          // On very small screens, wrap the hint text
+          isMobile ? const _InstallHintWrapped() : const _InstallHint(),
         ],
       ),
     );
@@ -280,6 +297,9 @@ class _DownloadButtonState extends State<_DownloadButton> {
 
   @override
   Widget build(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+    final fullWidth = _BP.isMobile(w);
+
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hovered = true),
@@ -290,14 +310,16 @@ class _DownloadButtonState extends State<_DownloadButton> {
           scale: _hovered ? 1.03 : 1.0,
           duration: const Duration(milliseconds: 160),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 13),
+            width: fullWidth ? double.infinity : null,
+            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 14),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
+            child: Row(
+              mainAxisSize: fullWidth ? MainAxisSize.max : MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
                 Icon(Icons.download_rounded, color: Color(0xFF0A0D18), size: 16),
                 SizedBox(width: 9),
                 Text(
@@ -318,7 +340,7 @@ class _DownloadButtonState extends State<_DownloadButton> {
   }
 }
 
-// ─── Install hint ─────────────────────────────────────────────────────────────
+// ─── Install hint (single row — tablet/desktop) ───────────────────────────────
 class _InstallHint extends StatelessWidget {
   const _InstallHint({super.key});
 
@@ -353,6 +375,55 @@ class _InstallHint extends StatelessWidget {
   }
 }
 
+// ─── Install hint (wrapped — mobile) ─────────────────────────────────────────
+class _InstallHintWrapped extends StatelessWidget {
+  const _InstallHintWrapped({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color(0x05FFFFFF),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: _kBorderFaint),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Padding(
+            padding: EdgeInsets.only(top: 1),
+            child: Icon(Icons.info_outline_rounded, size: 12, color: _kTextMuted),
+          ),
+          SizedBox(width: 8),
+          Expanded(
+            child: Text.rich(
+              TextSpan(
+                style: TextStyle(fontSize: 11, height: 1.6),
+                children: [
+                  TextSpan(text: 'Enable ', style: TextStyle(color: _kTextHint)),
+                  TextSpan(
+                    text: 'Install from unknown sources',
+                    style: TextStyle(
+                      color: _kTextSecondary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' in Settings before installing',
+                    style: TextStyle(color: _kTextHint),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 // ─── Platforms Section ────────────────────────────────────────────────────────
 class _PlatformsSection extends StatelessWidget {
   const _PlatformsSection({super.key});
@@ -368,9 +439,11 @@ class _PlatformsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+    final hPad = _BP.isMobile(w) ? 16.0 : 24.0;
+
     return Padding(
-      // top 16 — snug below the install hint; bottom 40 before footer
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 40),
+      padding: EdgeInsets.fromLTRB(hPad, 16, hPad, 40),
       child: Column(
         children: [
           Row(
@@ -439,30 +512,81 @@ class _Chip extends StatelessWidget {
 class _Footer extends StatelessWidget {
   final VoidCallback onGitHubTap;
   final VoidCallback onPrivacyTap;
-  const _Footer(
-      {required this.onGitHubTap, required this.onPrivacyTap, super.key});
+  const _Footer({required this.onGitHubTap, required this.onPrivacyTap, super.key});
 
   @override
   Widget build(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+    final isMobile = _BP.isMobile(w);
+    final hPad = isMobile ? 16.0 : 28.0;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+      padding: EdgeInsets.symmetric(horizontal: hPad, vertical: isMobile ? 20 : 16),
       decoration: const BoxDecoration(
         border: Border(top: BorderSide(color: _kBorderFaint)),
       ),
-      child: Row(
-        children: [
-          const _Logo(iconSize: 22),
-          const Spacer(),
-          const Text(
-            '© 2026 — built for developers',
-            style: TextStyle(fontSize: 11, color: _kTextHint),
-          ),
-          const Spacer(),
-          _FooterLink(label: 'GitHub', onTap: onGitHubTap),
-          const SizedBox(width: 18),
-          _FooterLink(label: 'Privacy', onTap: onPrivacyTap),
-        ],
-      ),
+      child: isMobile
+          ? _FooterMobile(
+              onGitHubTap: onGitHubTap,
+              onPrivacyTap: onPrivacyTap,
+            )
+          : _FooterDesktop(
+              onGitHubTap: onGitHubTap,
+              onPrivacyTap: onPrivacyTap,
+            ),
+    );
+  }
+}
+
+class _FooterDesktop extends StatelessWidget {
+  final VoidCallback onGitHubTap;
+  final VoidCallback onPrivacyTap;
+  const _FooterDesktop({required this.onGitHubTap, required this.onPrivacyTap, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const _Logo(iconSize: 22),
+        const Spacer(),
+        const Text(
+          '© 2026 — built for developers',
+          style: TextStyle(fontSize: 11, color: _kTextHint),
+        ),
+        const Spacer(),
+        _FooterLink(label: 'GitHub', onTap: onGitHubTap),
+        const SizedBox(width: 18),
+        _FooterLink(label: 'Privacy', onTap: onPrivacyTap),
+      ],
+    );
+  }
+}
+
+class _FooterMobile extends StatelessWidget {
+  final VoidCallback onGitHubTap;
+  final VoidCallback onPrivacyTap;
+  const _FooterMobile({required this.onGitHubTap, required this.onPrivacyTap, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const _Logo(iconSize: 22),
+        const SizedBox(height: 14),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _FooterLink(label: 'GitHub', onTap: onGitHubTap),
+            const SizedBox(width: 20),
+            _FooterLink(label: 'Privacy', onTap: onPrivacyTap),
+          ],
+        ),
+        const SizedBox(height: 10),
+        const Text(
+          '© 2026 — built for developers',
+          style: TextStyle(fontSize: 11, color: _kTextHint),
+        ),
+      ],
     );
   }
 }
