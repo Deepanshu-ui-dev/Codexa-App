@@ -1,32 +1,23 @@
 {
-  "buildCommand": "",
+  "buildCommand": "flutter build web --release",
   "outputDirectory": "build/web",
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
     {
-      "source": "/flutter_bootstrap.js",
+      "source": "/(.*)",
       "headers": [
         {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600"
-        }
-      ]
-    },
-    {
-      "source": "/main.dart.js",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600"
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
         }
       ]
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
