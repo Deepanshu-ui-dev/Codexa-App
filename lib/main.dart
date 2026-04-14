@@ -194,7 +194,7 @@ class _HeroSection extends StatelessWidget {
       child: Column(
         children: [
           _VersionBadge(),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
@@ -220,7 +220,7 @@ class _HeroSection extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
           ConstrainedBox(
             constraints: BoxConstraints(maxWidth: maxSubtitleWidth),
             child: Text(
@@ -236,7 +236,7 @@ class _HeroSection extends StatelessWidget {
           ),
           SizedBox(height: isMobile ? 28.0 : 34.0),
           _DownloadButton(onTap: onDownload),
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
           // On very small screens, wrap the hint text
           isMobile ? const _InstallHintWrapped() : const _InstallHint(),
         ],
@@ -449,16 +449,16 @@ class _PlatformsSection extends StatelessWidget {
           Row(
             children: const [
               Expanded(child: Divider(color: _kBorderFaint, thickness: 0.5)),
-              SizedBox(width: 14),
+              SizedBox(width: 10),
               Text(
                 'supported platforms',
                 style: TextStyle(fontSize: 11, color: _kTextHint),
               ),
-              SizedBox(width: 14),
+              SizedBox(width: 10),
               Expanded(child: Divider(color: _kBorderFaint, thickness: 0.5)),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -555,8 +555,7 @@ class _FooterDesktop extends StatelessWidget {
         ),
         const Spacer(),
         _FooterLink(label: 'GitHub', onTap: onGitHubTap),
-        const SizedBox(width: 18),
-        _FooterLink(label: 'Privacy', onTap: onPrivacyTap),
+      
       ],
     );
   }
