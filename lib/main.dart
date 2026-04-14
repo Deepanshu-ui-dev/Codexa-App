@@ -1,30 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// ─── Constants ───────────────────────────────────────────────────────────────
 class AppLinks {
-  static const androidDownloadUrl = 'https://ryzxalaibcwffoamznrg.supabase.co/storage/v1/object/public/app-releases/Codexa-1.1.1.apk';
+  static const androidDownloadUrl =
+      'https://ryzxalaibcwffoamznrg.supabase.co/storage/v1/object/public/app-releases/Codexa-1.1.1.apk';
   static const developerWebsiteUrl = 'https://deepanshux.tech';
   static const githubRepoUrl = 'https://github.com/Deepanshu-ui-dev/Codexa-App';
-  static const privacyUrl = 'https://github.com/Deepanshu-ui-dev/Codexa-App/blob/main/PRIVACY.md';
-  static const linkedinUrl = 'https://linkedin.com/in/deepanshux';
+  static const privacyUrl =
+      'https://github.com/Deepanshu-ui-dev/Codexa-App/blob/main/PRIVACY.md';
 }
 
-const _kBg = Color(0xFF0A0E27);
-const _kBgCard = Color(0xFF1A1F3A);
-const _kAccent = Color(0xFF5B9FFF);
-const _kAccentDark = Color(0xFF3D7FD5);
-const _kBorder = Color(0x14FFFFFF);
-const _kBorderMid = Color(0x20FFFFFF);
-const _kTextPrimary = Color(0xFFFFFFFF);
-const _kTextSecondary = Color(0xFFB0B8D4);
-const _kTextMuted = Color(0xFF7A8399);
-const _kTextHint = Color(0xFF5A6278);
-const _kSuccess = Color(0xFF10B981);
-const _kWarning = Color(0xFFF59E0B);
+// ─── Theme ───────────────────────────────────────────────────────────────────
+const _kBg            = Color(0xFF05080F);
+const _kAccent        = Color(0xFF4D7EFF);
+const _kAccentLight   = Color(0xFF7FA5FF);
+const _kBorderSub     = Color(0x14FFFFFF);
+const _kBorderFaint   = Color(0x0AFFFFFF);
+const _kTextPrimary   = Color(0xFFF0F2FF);
+const _kTextSecondary = Color(0x70FFFFFF);
+const _kTextMuted     = Color(0x45FFFFFF);
+const _kTextHint      = Color(0x28FFFFFF);
 
+Future<void> _launch(String url) async {
+  final uri = Uri.tryParse(url);
+  if (uri != null) await launchUrl(uri, mode: LaunchMode.externalApplication);
+}
+
+// ─── App ─────────────────────────────────────────────────────────────────────
 void main() {
   runApp(const MaterialApp(
-    title: 'Codexa — Competitive Programming Hub',
+    title: 'Codexa — Unified Competitive Programming',
     debugShowCheckedModeBanner: false,
     home: LandingScreen(),
   ));
@@ -33,11 +39,6 @@ void main() {
 class LandingScreen extends StatelessWidget {
   const LandingScreen({super.key});
 
-  Future<void> _launchUrl(String url) async {
-    final uri = Uri.tryParse(url);
-    if (uri != null) await launchUrl(uri, mode: LaunchMode.externalApplication);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,18 +46,14 @@ class LandingScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _NavBar(
-              onPortfolioTap: () => _launchUrl(AppLinks.developerWebsiteUrl),
-              onGithubTap: () => _launchUrl(AppLinks.githubRepoUrl),
+            _NavBar(onPortfolioTap: () => _launch(AppLinks.developerWebsiteUrl)),
+            _HeroSection(
+              onDownload: () => _launch(AppLinks.androidDownloadUrl),
             ),
-            _HeroSection(onDownload: () => _launchUrl(AppLinks.androidDownloadUrl)),
-            _FeaturesSection(),
-            _StatsSection(),
-            _DownloadCTASection(onDownload: () => _launchUrl(AppLinks.androidDownloadUrl)),
+            const _PlatformsSection(),
             _Footer(
-              onGitHubTap: () => _launchUrl(AppLinks.githubRepoUrl),
-              onPrivacyTap: () => _launchUrl(AppLinks.privacyUrl),
-              onLinkedInTap: () => _launchUrl(AppLinks.linkedinUrl),
+              onGitHubTap: () => _launch(AppLinks.githubRepoUrl),
+              onPrivacyTap: () => _launch(AppLinks.privacyUrl),
             ),
           ],
         ),
@@ -65,405 +62,255 @@ class LandingScreen extends StatelessWidget {
   }
 }
 
+// ─── Navbar ──────────────────────────────────────────────────────────────────
 class _NavBar extends StatelessWidget {
-  final VoidCallback onPortfolioTap, onGithubTap;
-  const _NavBar({required this.onPortfolioTap, required this.onGithubTap});
+  final VoidCallback onPortfolioTap;
+  const _NavBar({required this.onPortfolioTap, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: _kBorder, width: 1))),
+      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(color: _kBorderFaint)),
+      ),
       child: Row(
         children: [
-          const _LogoWidget(size: 32),
+          const _Logo(iconSize: 30),
           const Spacer(),
-          _NavLink(label: 'GitHub', onTap: onGithubTap),
-          const SizedBox(width: 20),
-          _NavButton(label: 'Portfolio ↗', onTap: onPortfolioTap),
+          _GhostButton(label: 'Developer ↗', onTap: onPortfolioTap),
         ],
       ),
     );
   }
 }
 
-class _NavLink extends StatefulWidget {
-  final String label;
-  final VoidCallback onTap;
-  const _NavLink({required this.label, required this.onTap});
-
-  @override
-  State<_NavLink> createState() => _NavLinkState();
-}
-
-class _NavLinkState extends State<_NavLink> {
-  bool _hovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: Text(
-          widget.label,
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
-            color: _hovered ? _kAccent : _kTextSecondary,
-            decoration: _hovered ? TextDecoration.underline : null,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _NavButton extends StatefulWidget {
-  final String label;
-  final VoidCallback onTap;
-  const _NavButton({required this.label, required this.onTap});
-
-  @override
-  State<_NavButton> createState() => _NavButtonState();
-}
-
-class _NavButtonState extends State<_NavButton> {
-  bool _hovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          decoration: BoxDecoration(
-            color: _hovered ? _kAccent.withOpacity(0.15) : const Color(0x0AFFFFFF),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: _hovered ? _kAccent.withOpacity(0.5) : _kBorderMid),
-          ),
-          child: Text(
-            widget.label,
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: _hovered ? _kAccent : _kTextSecondary),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _LogoWidget extends StatelessWidget {
-  final double size;
-  const _LogoWidget({required this.size});
+// ─── Logo ─────────────────────────────────────────────────────────────────────
+class _Logo extends StatelessWidget {
+  final double iconSize;
+  const _Logo({required this.iconSize, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(size * 0.3),
-            gradient: const LinearGradient(colors: [_kAccent, _kAccentDark], begin: Alignment.topLeft, end: Alignment.bottomRight),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(size * 0.3),
-            child: Image.asset('assets/images/Codexa.png', width: size, height: size, fit: BoxFit.cover),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(iconSize * 0.22),
+          child: Image.asset(
+            'assets/images/Codexa.png',
+            width: iconSize,
+            height: iconSize,
+            fit: BoxFit.cover,
           ),
         ),
-        const SizedBox(width: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('Codexa', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: _kTextPrimary)),
-            Text('Competitive Hub', style: TextStyle(fontSize: 9, fontWeight: FontWeight.w400, color: _kTextMuted)),
-          ],
+        const SizedBox(width: 10),
+        const Text(
+          'Codexa',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.4,
+            color: _kTextPrimary,
+          ),
         ),
       ],
     );
   }
 }
 
+// ─── Ghost button ─────────────────────────────────────────────────────────────
+class _GhostButton extends StatefulWidget {
+  final String label;
+  final VoidCallback onTap;
+  const _GhostButton({required this.label, required this.onTap, super.key});
+
+  @override
+  State<_GhostButton> createState() => _GhostButtonState();
+}
+
+class _GhostButtonState extends State<_GhostButton> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
+          decoration: BoxDecoration(
+            color: _hovered ? const Color(0x10FFFFFF) : const Color(0x07FFFFFF),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: _hovered ? _kBorderSub : _kBorderFaint,
+            ),
+          ),
+          child: Text(
+            widget.label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: _hovered ? _kTextSecondary : _kTextMuted,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
 class _HeroSection extends StatelessWidget {
   final VoidCallback onDownload;
-  const _HeroSection({required this.onDownload});
+  const _HeroSection({required this.onDownload, super.key});
 
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
-    final isMobile = w < 768;
-    
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: isMobile ? 24 : 40, vertical: isMobile ? 60 : 100),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 800),
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(color: _kAccent.withOpacity(0.1), borderRadius: BorderRadius.circular(100), border: Border.all(color: _kAccent.withOpacity(0.3))),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(width: 6, height: 6, decoration: const BoxDecoration(color: _kSuccess, shape: BoxShape.circle)),
-                    const SizedBox(width: 8),
-                    const Text('Version 1.1.1 — Live & Ready', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: _kAccent)),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 32),
-              Text('Track Your Competitive Programming Journey, Unified.', textAlign: TextAlign.center, style: TextStyle(fontSize: isMobile ? 36 : 52, fontWeight: FontWeight.w700, letterSpacing: -1.5, height: 1.2, color: _kTextPrimary)),
-              const SizedBox(height: 20),
-              Text('Monitor LeetCode, Codeforces, CodeChef, HackerRank and more — all in one beautiful dashboard with zero clutter.', textAlign: TextAlign.center, style: TextStyle(fontSize: 15, color: _kTextSecondary, height: 1.6, fontWeight: FontWeight.w400)),
-              const SizedBox(height: 40),
-              Wrap(
-                spacing: 16,
-                runSpacing: 16,
-                alignment: WrapAlignment.center,
-                children: [
-                  _PrimaryButton(label: '📲 Download APK', onTap: onDownload),
-                  _SecondaryButton(label: 'Learn More', onTap: () {}),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(color: _kWarning.withOpacity(0.08), borderRadius: BorderRadius.circular(8), border: Border.all(color: _kWarning.withOpacity(0.2))),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.info_outline_rounded, size: 14, color: _kWarning),
-                    const SizedBox(width: 10),
-                    Flexible(child: Text('Enable "Unknown Sources" in your browser settings', style: TextStyle(fontSize: 12, color: _kTextMuted, fontWeight: FontWeight.w400))),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _PrimaryButton extends StatefulWidget {
-  final String label;
-  final VoidCallback onTap;
-  const _PrimaryButton({required this.label, required this.onTap});
-
-  @override
-  State<_PrimaryButton> createState() => _PrimaryButtonState();
-}
-
-class _PrimaryButtonState extends State<_PrimaryButton> {
-  bool _hovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: AnimatedScale(
-          scale: _hovered ? 1.05 : 1.0,
-          duration: const Duration(milliseconds: 200),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [_kAccent, _kAccentDark], begin: Alignment.topLeft, end: Alignment.bottomRight),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [BoxShadow(color: _kAccent.withOpacity(0.3), blurRadius: 20, offset: const Offset(0, 8))],
-            ),
-            child: Text(widget.label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white)),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _SecondaryButton extends StatefulWidget {
-  final String label;
-  final VoidCallback onTap;
-  const _SecondaryButton({required this.label, required this.onTap});
-
-  @override
-  State<_SecondaryButton> createState() => _SecondaryButtonState();
-}
-
-class _SecondaryButtonState extends State<_SecondaryButton> {
-  bool _hovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
-          decoration: BoxDecoration(color: _hovered ? _kBgCard : const Color(0x0AFFFFFF), borderRadius: BorderRadius.circular(12), border: Border.all(color: _hovered ? _kAccent.withOpacity(0.5) : _kBorderMid, width: 1.5)),
-          child: Text(widget.label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: _hovered ? _kAccent : _kTextSecondary)),
-        ),
-      ),
-    );
-  }
-}
-
-class _FeaturesSection extends StatelessWidget {
-  const _FeaturesSection();
-
-  static const features = [
-    ('📊', 'Multi-Platform Track', 'Monitor LeetCode, Codeforces, CodeChef'),
-    ('📈', 'Progress Analytics', 'Visual graphs and detailed statistics'),
-    ('⚡', 'Real-time Sync', 'Instant updates from all platforms'),
-    ('🎯', 'Personalized Goals', 'Set targets and track improvement'),
-    ('🏆', 'Leaderboards', 'Compare stats with other programmers'),
-    ('📱', 'Offline Support', 'Access data without internet'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 80),
-      color: _kBgCard.withOpacity(0.3),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
-          child: Column(
-            children: [
-              const Text('Powerful Features ✨', style: TextStyle(fontSize: 36, fontWeight: FontWeight.w700, color: _kTextPrimary)),
-              const SizedBox(height: 16),
-              Text('Everything you need to master competitive programming', style: TextStyle(fontSize: 16, color: _kTextSecondary, fontWeight: FontWeight.w400)),
-              const SizedBox(height: 60),
-              GridView.count(
-                shrinkWrap: true,
-                crossAxisCount: 3,
-                childAspectRatio: 1.1,
-                mainAxisSpacing: 32,
-                crossAxisSpacing: 32,
-                children: features.map((f) => _FeatureCard(emoji: f.$1, title: f.$2, description: f.$3)).toList(),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _FeatureCard extends StatefulWidget {
-  final String emoji, title, description;
-  const _FeatureCard({required this.emoji, required this.title, required this.description});
-
-  @override
-  State<_FeatureCard> createState() => _FeatureCardState();
-}
-
-class _FeatureCardState extends State<_FeatureCard> {
-  bool _hovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(color: _hovered ? _kBgCard : _kBgCard.withOpacity(0.5), borderRadius: BorderRadius.circular(16), border: Border.all(color: _hovered ? _kAccent.withOpacity(0.3) : _kBorder)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(widget.emoji, style: const TextStyle(fontSize: 32)),
-            const SizedBox(height: 16),
-            Text(widget.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: _kTextPrimary)),
-            const SizedBox(height: 8),
-            Text(widget.description, style: TextStyle(fontSize: 13, color: _kTextMuted, fontWeight: FontWeight.w400, height: 1.5)),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _StatsSection extends StatelessWidget {
-  const _StatsSection();
-
-  static const stats = [('5+', 'Platforms'), ('1.1K+', 'Users'), ('100K+', 'Tracked'), ('24/7', 'Sync')];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 60),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1000),
-          child: GridView.count(
-            shrinkWrap: true,
-            crossAxisCount: 4,
-            childAspectRatio: 1.2,
-            mainAxisSpacing: 24,
-            crossAxisSpacing: 24,
-            children: stats.map((s) => _StatCard(number: s.$1, label: s.$2)).toList(),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _StatCard extends StatelessWidget {
-  final String number, label;
-  const _StatCard({required this.number, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: _kBgCard.withOpacity(0.5), borderRadius: BorderRadius.circular(16), border: Border.all(color: _kBorder)),
+    return Padding(
+      // top 80 preserved; bottom reduced to 28 — just enough breath before the divider
+      padding: const EdgeInsets.fromLTRB(28, 80, 28, 28),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(number, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w700, color: _kAccent)),
-          const SizedBox(height: 8),
-          Text(label, textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: _kTextMuted, fontWeight: FontWeight.w500)),
+          _VersionBadge(),
+          const SizedBox(height: 20),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: w > 600 ? 56 : 40,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -2.5,
+                height: 1.05,
+              ),
+              children: const [
+                TextSpan(
+                  text: 'Your competitive\n',
+                  style: TextStyle(color: _kTextPrimary),
+                ),
+                TextSpan(
+                  text: 'programming, ',
+                  style: TextStyle(color: _kTextMuted),
+                ),
+                TextSpan(
+                  text: 'unified.',
+                  style: TextStyle(color: _kTextPrimary),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 380),
+            child: const Text(
+              'Track LeetCode, Codeforces, CodeChef and more — one clean dashboard, zero clutter.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 15,
+                color: _kTextMuted,
+                height: 1.75,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          const SizedBox(height: 34),
+          _DownloadButton(onTap: onDownload),
+          const SizedBox(height: 14),
+          const _InstallHint(),
         ],
       ),
     );
   }
 }
 
-class _DownloadCTASection extends StatelessWidget {
-  final VoidCallback onDownload;
-  const _DownloadCTASection({required this.onDownload});
-
+// ─── Version badge ────────────────────────────────────────────────────────────
+class _VersionBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 80),
-      color: _kBgCard.withOpacity(0.4),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600),
-          child: Column(
-            children: [
-              const Text('Ready to Get Started? 🚀', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700, color: _kTextPrimary)),
-              const SizedBox(height: 16),
-              Text('Download Codexa now and start tracking your competitive programming journey', textAlign: TextAlign.center, style: TextStyle(fontSize: 15, color: _kTextSecondary, height: 1.6)),
-              const SizedBox(height: 40),
-              _PrimaryButton(label: '📲 Download APK', onTap: onDownload),
-            ],
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+      decoration: BoxDecoration(
+        color: _kAccent.withOpacity(0.09),
+        borderRadius: BorderRadius.circular(100),
+        border: Border.all(color: _kAccent.withOpacity(0.25)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 5,
+            height: 5,
+            decoration: const BoxDecoration(
+              color: _kAccent,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 8),
+          const Text(
+            'Version 1.1.1 — now live',
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+              color: _kAccentLight,
+              letterSpacing: 0.3,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── Download button ──────────────────────────────────────────────────────────
+class _DownloadButton extends StatefulWidget {
+  final VoidCallback onTap;
+  const _DownloadButton({required this.onTap, super.key});
+
+  @override
+  State<_DownloadButton> createState() => _DownloadButtonState();
+}
+
+class _DownloadButtonState extends State<_DownloadButton> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedScale(
+          scale: _hovered ? 1.03 : 1.0,
+          duration: const Duration(milliseconds: 160),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 13),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.download_rounded, color: Color(0xFF0A0D18), size: 16),
+                SizedBox(width: 9),
+                Text(
+                  'Download for Android',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF0A0D18),
+                    letterSpacing: -0.2,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -471,43 +318,150 @@ class _DownloadCTASection extends StatelessWidget {
   }
 }
 
-class _Footer extends StatelessWidget {
-  final VoidCallback onGitHubTap, onPrivacyTap, onLinkedInTap;
-  const _Footer({required this.onGitHubTap, required this.onPrivacyTap, required this.onLinkedInTap});
+// ─── Install hint ─────────────────────────────────────────────────────────────
+class _InstallHint extends StatelessWidget {
+  const _InstallHint({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
-      decoration: BoxDecoration(border: Border(top: BorderSide(color: _kBorder, width: 1))),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const _LogoWidget(size: 24),
-                  Row(
-                    spacing: 24,
-                    children: [_FooterLink(label: 'GitHub', onTap: onGitHubTap), _FooterLink(label: 'Privacy', onTap: onPrivacyTap), _FooterLink(label: 'LinkedIn', onTap: onLinkedInTap)],
-                  ),
-                ],
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+      decoration: BoxDecoration(
+        color: const Color(0x05FFFFFF),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: _kBorderFaint),
+      ),
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.info_outline_rounded, size: 12, color: _kTextMuted),
+          SizedBox(width: 8),
+          Text('Enable ', style: TextStyle(fontSize: 11, color: _kTextHint)),
+          Text(
+            'Install from unknown sources',
+            style: TextStyle(
+              fontSize: 11,
+              color: _kTextSecondary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          Text(' before installing',
+              style: TextStyle(fontSize: 11, color: _kTextHint)),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── Platforms Section ────────────────────────────────────────────────────────
+class _PlatformsSection extends StatelessWidget {
+  const _PlatformsSection({super.key});
+
+  static const _items = [
+    ('LeetCode', Color(0xFF4CAF50)),
+    ('Codeforces', _kAccent),
+    ('CodeChef', Color(0xFFF59E0B)),
+    ('HackerRank', Color(0xFF06B6D4)),
+    ('GitHub', Color(0x80FFFFFF)),
+    ('GeeksforGeeks', Color(0xFF4CAF50)),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      // top 16 — snug below the install hint; bottom 40 before footer
+      padding: const EdgeInsets.fromLTRB(24, 16, 24, 40),
+      child: Column(
+        children: [
+          Row(
+            children: const [
+              Expanded(child: Divider(color: _kBorderFaint, thickness: 0.5)),
+              SizedBox(width: 14),
+              Text(
+                'supported platforms',
+                style: TextStyle(fontSize: 11, color: _kTextHint),
               ),
-              const SizedBox(height: 32),
-              Container(height: 1, color: _kBorder),
-              const SizedBox(height: 24),
-              Column(
-                children: [
-                  Text('© 2026 Codexa. Built with ❤️ by Deepanshu Kaushik', style: TextStyle(fontSize: 12, color: _kTextMuted, fontWeight: FontWeight.w400)),
-                  const SizedBox(height: 12),
-                  Text('Empower your competitive programming journey • Track • Analyze • Improve', style: TextStyle(fontSize: 11, color: _kTextHint, fontWeight: FontWeight.w400)),
-                ],
-              ),
+              SizedBox(width: 14),
+              Expanded(child: Divider(color: _kBorderFaint, thickness: 0.5)),
             ],
           ),
-        ),
+          const SizedBox(height: 20),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            alignment: WrapAlignment.center,
+            children: _items.map((p) => _Chip(label: p.$1, dot: p.$2)).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Chip extends StatelessWidget {
+  final String label;
+  final Color dot;
+  const _Chip({required this.label, required this.dot, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 6),
+      decoration: BoxDecoration(
+        color: const Color(0x05FFFFFF),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: _kBorderFaint),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 5,
+            height: 5,
+            decoration: BoxDecoration(color: dot, shape: BoxShape.circle),
+          ),
+          const SizedBox(width: 7),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 11.5,
+              fontWeight: FontWeight.w400,
+              color: _kTextMuted,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── Footer ───────────────────────────────────────────────────────────────────
+class _Footer extends StatelessWidget {
+  final VoidCallback onGitHubTap;
+  final VoidCallback onPrivacyTap;
+  const _Footer(
+      {required this.onGitHubTap, required this.onPrivacyTap, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+      decoration: const BoxDecoration(
+        border: Border(top: BorderSide(color: _kBorderFaint)),
+      ),
+      child: Row(
+        children: [
+          const _Logo(iconSize: 22),
+          const Spacer(),
+          const Text(
+            '© 2026 — built for developers',
+            style: TextStyle(fontSize: 11, color: _kTextHint),
+          ),
+          const Spacer(),
+          _FooterLink(label: 'GitHub', onTap: onGitHubTap),
+          const SizedBox(width: 18),
+          _FooterLink(label: 'Privacy', onTap: onPrivacyTap),
+        ],
       ),
     );
   }
@@ -516,7 +470,7 @@ class _Footer extends StatelessWidget {
 class _FooterLink extends StatefulWidget {
   final String label;
   final VoidCallback onTap;
-  const _FooterLink({required this.label, required this.onTap});
+  const _FooterLink({required this.label, required this.onTap, super.key});
 
   @override
   State<_FooterLink> createState() => _FooterLinkState();
@@ -528,11 +482,19 @@ class _FooterLinkState extends State<_FooterLink> {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
+      cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: GestureDetector(
         onTap: widget.onTap,
-        child: Text(widget.label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: _hovered ? _kAccent : _kTextMuted, decoration: _hovered ? TextDecoration.underline : null)),
+        child: AnimatedDefaultTextStyle(
+          duration: const Duration(milliseconds: 150),
+          style: TextStyle(
+            fontSize: 11,
+            color: _hovered ? _kTextSecondary : _kTextHint,
+          ),
+          child: Text(widget.label),
+        ),
       ),
     );
   }

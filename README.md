@@ -88,12 +88,6 @@ Codexa is built for competitive programmers who want to master their craft. With
 
 ---
 
-## 🤝 Contributing
-
-Found a bug? Have an idea? Open an issue or PR!
-
----
-
 ## 📞 Contact
 
 **Developer:** Deepanshu Kaushik  
