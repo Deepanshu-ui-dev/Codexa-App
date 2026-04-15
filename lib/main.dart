@@ -601,7 +601,7 @@ class _FooterMobile extends StatelessWidget {
           runSpacing: 4,
           children: [
             _FooterLink(label: 'GitHub',  onTap: onGitHubTap),
-           
+
           ],
         ),
         const SizedBox(height: 8),
@@ -632,8 +632,6 @@ class _FooterDesktop extends StatelessWidget {
         ),
         const Spacer(),
         _FooterLink(label: 'GitHub',  onTap: onGitHubTap),
-        const SizedBox(width: 16),
-       
       ],
     );
   }
