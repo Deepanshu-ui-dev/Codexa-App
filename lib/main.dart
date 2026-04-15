@@ -51,34 +51,37 @@ class LandingScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: _kBg,
       resizeToAvoidBottomInset: false,
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: IntrinsicHeight(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _NavBar(
-                      onPortfolioTap: () => _launch(AppLinks.developerWebsiteUrl),
-                    ),
-                    _HeroSection(
-                      onDownload: () => _launch(AppLinks.androidDownloadUrl),
-                    ),
-                    const _PlatformsSection(),
-                    const Spacer(),
-                    _Footer(
-                      onGitHubTap: () => _launch(AppLinks.githubRepoUrl),
-                      onPrivacyTap: () => _launch(AppLinks.privacyUrl),
-                    ),
-                  ],
-                ),
+      // FIX: Remove LayoutBuilder + SingleChildScrollView + IntrinsicHeight + Spacer combo.
+      // Use a simple Column with mainAxisSize.min so the footer hugs the content
+      // and doesn't float on empty space.
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _NavBar(
+            onPortfolioTap: () => _launch(AppLinks.developerWebsiteUrl),
+          ),
+          // FIX: Wrap the scrollable content (hero + platforms) in an Expanded
+          // SingleChildScrollView so it fills available space without pushing
+          // the footer down via a Spacer.
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _HeroSection(
+                    onDownload: () => _launch(AppLinks.androidDownloadUrl),
+                  ),
+                  const _PlatformsSection(),
+                ],
               ),
             ),
-          );
-        },
+          ),
+          _Footer(
+            onGitHubTap: () => _launch(AppLinks.githubRepoUrl),
+            onPrivacyTap: () => _launch(AppLinks.privacyUrl),
+          ),
+        ],
       ),
     );
   }
@@ -93,7 +96,6 @@ class _NavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final hPad = _BP.isMobile(w) ? 16.0 : 28.0;
-    // Use viewPadding.top (physical status bar height) — never zeroed by ancestors
     final statusBarHeight = MediaQuery.of(context).viewPadding.top;
 
     return Container(
@@ -204,12 +206,15 @@ class _HeroSection extends StatelessWidget {
 
     final double hPad         = isMobile ? 20.0 : 28.0;
     final double topPad       = isMobile ? 52.0 : isDesktop ? 100.0 : 80.0;
+    // FIX: Reduce bottom padding — was 0 which caused visual imbalance with
+    // the platforms section sitting too close.
+    final double bottomPad    = isMobile ? 32.0 : 48.0;
     final double titleSize    = isMobile ? 34.0 : isDesktop ? 64.0 : 48.0;
     final double subtitleSize = isMobile ? 14.0 : 15.0;
     final double maxSubtitleW = isMobile ? double.infinity : 420.0;
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(hPad, topPad, hPad, 0),
+      padding: EdgeInsets.fromLTRB(hPad, topPad, hPad, bottomPad),
       child: Column(
         children: [
           _VersionBadge(),
@@ -463,7 +468,9 @@ class _PlatformsSection extends StatelessWidget {
     final hPad = _BP.isMobile(w) ? 16.0 : 24.0;
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(hPad, 24, hPad, 40),
+      // FIX: Increase bottom padding to give the platforms section proper
+      // breathing room above the footer.
+      padding: EdgeInsets.fromLTRB(hPad, 8, hPad, 48),
       child: Column(
         children: [
           Row(
@@ -533,28 +540,26 @@ class _Chip extends StatelessWidget {
 class _Footer extends StatelessWidget {
   final VoidCallback onGitHubTap;
   final VoidCallback onPrivacyTap;
-  const _Footer(
-      {required this.onGitHubTap, required this.onPrivacyTap, super.key});
+
+  const _Footer({
+    required this.onGitHubTap,
+    required this.onPrivacyTap,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     final w        = MediaQuery.of(context).size.width;
     final isMobile = _BP.isMobile(w);
     final hPad     = isMobile ? 16.0 : 28.0;
-
-    // FIX: viewPadding.bottom is the *physical* system nav-bar inset.
-    // Unlike padding.bottom, it is NEVER consumed / zeroed out by
-    // SingleChildScrollView or any ancestor MediaQuery, so it always
-    // reflects the real bottom safe-area on every Android/iOS device.
-    final bottomSafe = MediaQuery.of(context).viewPadding.bottom;
+    // FIX: Use padding.bottom (safe area inset from system) instead of
+    // viewPadding.bottom. On most Android devices viewPadding.bottom returns
+    // the full gesture-navigation bar height even when the keyboard is hidden,
+    // inflating the footer. padding.bottom respects the current inset state.
+    final bottomSafe = MediaQuery.of(context).padding.bottom;
 
     return Container(
-      padding: EdgeInsets.fromLTRB(
-        hPad,
-        isMobile ? 20.0 : 16.0,
-        hPad,
-        (isMobile ? 20.0 : 16.0) + bottomSafe,
-      ),
+      padding: EdgeInsets.fromLTRB(hPad, 16, hPad, 16 + bottomSafe),
       decoration: const BoxDecoration(
         border: Border(top: BorderSide(color: _kBorderFaint)),
       ),
@@ -571,11 +576,52 @@ class _Footer extends StatelessWidget {
   }
 }
 
+class _FooterMobile extends StatelessWidget {
+  final VoidCallback onGitHubTap;
+  final VoidCallback onPrivacyTap;
+
+  const _FooterMobile({
+    required this.onGitHubTap,
+    required this.onPrivacyTap,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const _Logo(iconSize: 22),
+        const SizedBox(height: 12),
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 16,
+          runSpacing: 8,
+          children: [
+            _FooterLink(label: 'GitHub', onTap: onGitHubTap),
+            _FooterLink(label: 'Privacy', onTap: onPrivacyTap),
+          ],
+        ),
+        const SizedBox(height: 10),
+        const Text(
+          '© 2026 — built for developers',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 11, color: _kTextHint),
+        ),
+      ],
+    );
+  }
+}
+
 class _FooterDesktop extends StatelessWidget {
   final VoidCallback onGitHubTap;
   final VoidCallback onPrivacyTap;
-  const _FooterDesktop(
-      {required this.onGitHubTap, required this.onPrivacyTap, super.key});
+
+  const _FooterDesktop({
+    required this.onGitHubTap,
+    required this.onPrivacyTap,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -589,37 +635,8 @@ class _FooterDesktop extends StatelessWidget {
         ),
         const Spacer(),
         _FooterLink(label: 'GitHub', onTap: onGitHubTap),
-      ],
-    );
-  }
-}
-
-class _FooterMobile extends StatelessWidget {
-  final VoidCallback onGitHubTap;
-  final VoidCallback onPrivacyTap;
-  const _FooterMobile(
-      {required this.onGitHubTap, required this.onPrivacyTap, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const _Logo(iconSize: 22),
-        const SizedBox(height: 14),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _FooterLink(label: 'GitHub', onTap: onGitHubTap),
-            const SizedBox(width: 20),
-            _FooterLink(label: 'Privacy', onTap: onPrivacyTap),
-          ],
-        ),
-        const SizedBox(height: 10),
-        const Text(
-          '© 2026 — built for developers',
-          style: TextStyle(fontSize: 11, color: _kTextHint),
-        ),
+        const SizedBox(width: 14),
+        _FooterLink(label: 'Privacy', onTap: onPrivacyTap),
       ],
     );
   }
@@ -628,7 +645,12 @@ class _FooterMobile extends StatelessWidget {
 class _FooterLink extends StatefulWidget {
   final String label;
   final VoidCallback onTap;
-  const _FooterLink({required this.label, required this.onTap, super.key});
+
+  const _FooterLink({
+    required this.label,
+    required this.onTap,
+    super.key,
+  });
 
   @override
   State<_FooterLink> createState() => _FooterLinkState();
