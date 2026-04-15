@@ -48,20 +48,18 @@ class LandingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // FIX: Use LayoutBuilder + ConstrainedBox so the Column fills the viewport
-    // height exactly — eliminating the phantom gap that appeared below the footer.
     return Scaffold(
       backgroundColor: _kBg,
+      resizeToAvoidBottomInset: false,
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
             child: ConstrainedBox(
-              // Ensure the column is at least as tall as the visible area so
-              // the footer sits flush at the bottom on short content, while
-              // still scrolling naturally on tall content.
               constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: IntrinsicHeight(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _NavBar(
                       onPortfolioTap: () => _launch(AppLinks.developerWebsiteUrl),
@@ -70,7 +68,6 @@ class LandingScreen extends StatelessWidget {
                       onDownload: () => _launch(AppLinks.androidDownloadUrl),
                     ),
                     const _PlatformsSection(),
-                    // Spacer pushes footer to the bottom when content is short
                     const Spacer(),
                     _Footer(
                       onGitHubTap: () => _launch(AppLinks.githubRepoUrl),
@@ -96,9 +93,11 @@ class _NavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final hPad = _BP.isMobile(w) ? 16.0 : 28.0;
+    // Use viewPadding.top (physical status bar height) — never zeroed by ancestors
+    final statusBarHeight = MediaQuery.of(context).viewPadding.top;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: hPad, vertical: 16),
+      padding: EdgeInsets.fromLTRB(hPad, statusBarHeight + 12, hPad, 12),
       decoration: const BoxDecoration(
         border: Border(bottom: BorderSide(color: _kBorderFaint)),
       ),
@@ -199,21 +198,18 @@ class _HeroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
+    final w         = MediaQuery.of(context).size.width;
     final isMobile  = _BP.isMobile(w);
     final isDesktop = _BP.isDesktop(w);
 
-    final double hPad          = isMobile ? 20.0 : 28.0;
-    final double topPad        = isMobile ? 52.0 : isDesktop ? 100.0 : 80.0;
-    // FIX: bottom padding was 28 — reduced to 0 so there is no extra gap
-    // between the hero and the platforms section.
-    final double bottomPad     = 0.0;
-    final double titleSize     = isMobile ? 34.0 : isDesktop ? 64.0 : 48.0;
-    final double subtitleSize  = isMobile ? 14.0 : 15.0;
-    final double maxSubtitleW  = isMobile ? double.infinity : 420.0;
+    final double hPad         = isMobile ? 20.0 : 28.0;
+    final double topPad       = isMobile ? 52.0 : isDesktop ? 100.0 : 80.0;
+    final double titleSize    = isMobile ? 34.0 : isDesktop ? 64.0 : 48.0;
+    final double subtitleSize = isMobile ? 14.0 : 15.0;
+    final double maxSubtitleW = isMobile ? double.infinity : 420.0;
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(hPad, topPad, hPad, bottomPad),
+      padding: EdgeInsets.fromLTRB(hPad, topPad, hPad, 0),
       child: Column(
         children: [
           _VersionBadge(),
@@ -319,7 +315,7 @@ class _DownloadButtonState extends State<_DownloadButton> {
 
   @override
   Widget build(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
+    final w         = MediaQuery.of(context).size.width;
     final fullWidth = _BP.isMobile(w);
 
     return MouseRegion(
@@ -424,7 +420,9 @@ class _InstallHintWrapped extends StatelessWidget {
               TextSpan(
                 style: TextStyle(fontSize: 11, height: 1.6),
                 children: [
-                  TextSpan(text: 'Enable ', style: TextStyle(color: _kTextHint)),
+                  TextSpan(
+                      text: 'Enable ',
+                      style: TextStyle(color: _kTextHint)),
                   TextSpan(
                     text: 'Install from unknown sources',
                     style: TextStyle(
@@ -461,12 +459,10 @@ class _PlatformsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
+    final w    = MediaQuery.of(context).size.width;
     final hPad = _BP.isMobile(w) ? 16.0 : 24.0;
 
     return Padding(
-      // FIX: top padding increased slightly (16 → 24) to give visual
-      // breathing room after the hero hint box; bottom kept at 40.
       padding: EdgeInsets.fromLTRB(hPad, 24, hPad, 40),
       child: Column(
         children: [
@@ -487,7 +483,8 @@ class _PlatformsSection extends StatelessWidget {
             spacing: 8,
             runSpacing: 8,
             alignment: WrapAlignment.center,
-            children: _items.map((p) => _Chip(label: p.$1, dot: p.$2)).toList(),
+            children:
+                _items.map((p) => _Chip(label: p.$1, dot: p.$2)).toList(),
           ),
         ],
       ),
@@ -536,23 +533,27 @@ class _Chip extends StatelessWidget {
 class _Footer extends StatelessWidget {
   final VoidCallback onGitHubTap;
   final VoidCallback onPrivacyTap;
-  const _Footer({required this.onGitHubTap, required this.onPrivacyTap, super.key});
+  const _Footer(
+      {required this.onGitHubTap, required this.onPrivacyTap, super.key});
 
   @override
   Widget build(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
+    final w        = MediaQuery.of(context).size.width;
     final isMobile = _BP.isMobile(w);
-    final hPad = isMobile ? 16.0 : 28.0;
+    final hPad     = isMobile ? 16.0 : 28.0;
+
+    // FIX: viewPadding.bottom is the *physical* system nav-bar inset.
+    // Unlike padding.bottom, it is NEVER consumed / zeroed out by
+    // SingleChildScrollView or any ancestor MediaQuery, so it always
+    // reflects the real bottom safe-area on every Android/iOS device.
+    final bottomSafe = MediaQuery.of(context).viewPadding.bottom;
 
     return Container(
-      // FIX: add bottom safe-area padding so the footer never overlaps
-      // the system navigation bar on Android/iOS devices.
       padding: EdgeInsets.fromLTRB(
         hPad,
-        isMobile ? 20 : 16,
+        isMobile ? 20.0 : 16.0,
         hPad,
-        (isMobile ? 20.0 : 16.0) +
-            MediaQuery.of(context).padding.bottom,
+        (isMobile ? 20.0 : 16.0) + bottomSafe,
       ),
       decoration: const BoxDecoration(
         border: Border(top: BorderSide(color: _kBorderFaint)),
@@ -602,6 +603,7 @@ class _FooterMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         const _Logo(iconSize: 22),
         const SizedBox(height: 14),
