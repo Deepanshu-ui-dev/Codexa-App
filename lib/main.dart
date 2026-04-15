@@ -14,7 +14,6 @@ class AppLinks {
 
 // ─── Design Tokens ────────────────────────────────────────────────────────────
 const _kBg            = Color(0xFF05080F);
-const _kSurface       = Color(0xFF0C1020);
 const _kAccent        = Color(0xFF4D7EFF);
 const _kAccentLight   = Color(0xFF7FA5FF);
 const _kAccentGlow    = Color(0x1A4D7EFF);
@@ -27,8 +26,6 @@ const _kTextHint      = Color(0x30FFFFFF);
 
 // ─── Spacing ──────────────────────────────────────────────────────────────────
 class _S {
-  static const xs  = 4.0;
-  static const sm  = 8.0;
   static const md  = 16.0;
   static const lg  = 24.0;
   static const xl  = 32.0;
@@ -46,7 +43,10 @@ class _BP {
 
 Future<void> _launch(String url) async {
   final uri = Uri.tryParse(url);
-  if (uri != null) await launchUrl(uri, mode: LaunchMode.externalApplication);
+  if (uri != null) {
+    final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!launched) debugPrint('Could not launch $url');
+  }
 }
 
 // ─── Entry ────────────────────────────────────────────────────────────────────
@@ -68,19 +68,31 @@ class LandingScreen extends StatelessWidget {
       backgroundColor: _kBg,
       body: LayoutBuilder(
         builder: (context, constraints) {
-          return SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _NavBar(onPortfolioTap: () => _launch(AppLinks.developerWebsiteUrl)),
-                _HeroSection(onDownload: () => _launch(AppLinks.androidDownloadUrl)),
-                const _PlatformsSection(),
-                _Footer(
-                  onGitHubTap: () => _launch(AppLinks.githubRepoUrl),
-                  onPrivacyTap: () => _launch(AppLinks.privacyUrl),
-                ),
-              ],
+          return TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0, end: 1),
+            duration: const Duration(milliseconds: 700),
+            curve: Curves.easeOutCubic,
+            builder: (context, opacity, child) {
+              return Opacity(opacity: opacity, child: child);
+            },
+            child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _NavBar(
+                    onPortfolioTap: () => _launch(AppLinks.developerWebsiteUrl),
+                  ),
+                  _HeroSection(
+                    onDownload: () => _launch(AppLinks.androidDownloadUrl),
+                  ),
+                  const _PlatformsSection(),
+                  _Footer(
+                    onGitHubTap: () => _launch(AppLinks.githubRepoUrl),
+                    onPrivacyTap: () => _launch(AppLinks.privacyUrl),
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -102,7 +114,12 @@ class _NavBar extends StatelessWidget {
     final iconSize  = _BP.isMobile(w) ? 26.0 : 30.0;
 
     return Container(
-      padding: EdgeInsets.fromLTRB(hPad, topPad + 14, hPad, 14),
+      padding: EdgeInsets.fromLTRB(
+        hPad,
+        topPad + (w < 600 ? 12 : 18),
+        hPad,
+        w < 600 ? 12 : 16,
+      ),
       decoration: const BoxDecoration(
         border: Border(bottom: BorderSide(color: _kBorderFaint)),
       ),
@@ -134,6 +151,16 @@ class _Logo extends StatelessWidget {
             width: iconSize,
             height: iconSize,
             fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                width: iconSize,
+                height: iconSize,
+                decoration: BoxDecoration(
+                  color: _kAccent,
+                  borderRadius: BorderRadius.circular(iconSize * 0.22),
+                ),
+              );
+            },
           ),
         ),
         const SizedBox(width: 10),
@@ -213,27 +240,30 @@ class _HeroSection extends StatelessWidget {
     final double topPad    = isMobile ? _S.xl : isDesktop ? _S.xxxl : _S.xxl;
     final double botPad    = isMobile ? _S.xl : _S.xxl;
     final double titleSize = isMobile ? 36.0 : isDesktop ? 64.0 : 48.0;
+    final double heroGlowSize = isMobile ? 220.0 : isDesktop ? 480.0 : 340.0;
+    final double heroGlowHeight = isMobile ? 160.0 : isDesktop ? 280.0 : 220.0;
 
     return Stack(
+      clipBehavior: Clip.none,
       alignment: Alignment.topCenter,
       children: [
-        // Subtle glow behind headline
-        Positioned(
-          top: topPad,
-          child: Container(
-            width: 480,
-            height: 280,
-            decoration: BoxDecoration(
-              gradient: RadialGradient(
-                colors: [
-                  _kAccent.withOpacity(0.10),
-                  Colors.transparent,
-                ],
-                radius: 0.85,
+        if (!isMobile)
+          Positioned(
+            top: topPad - 12,
+            child: Container(
+              width: heroGlowSize,
+              height: heroGlowHeight,
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  colors: [
+                    _kAccent.withOpacity(0.10),
+                    Colors.transparent,
+                  ],
+                  radius: 0.85,
+                ),
               ),
             ),
           ),
-        ),
         Padding(
           padding: EdgeInsets.fromLTRB(hPad, topPad, hPad, botPad),
           child: Column(
@@ -243,7 +273,7 @@ class _HeroSection extends StatelessWidget {
               _Headline(titleSize: titleSize, isMobile: isMobile),
               const SizedBox(height: 16),
               _Subtitle(isMobile: isMobile),
-              SizedBox(height: isMobile ? _S.xl : 36.0),
+              SizedBox(height: isMobile ? _S.lg : 36.0),
               _DownloadButton(onTap: onDownload, isMobile: isMobile),
               const SizedBox(height: 12),
               const _InstallHint(),
@@ -270,7 +300,7 @@ class _Headline extends StatelessWidget {
           fontSize: titleSize,
           fontWeight: FontWeight.w700,
           letterSpacing: isMobile ? -1.5 : -2.5,
-          height: 1.08,
+          height: isMobile ? 1.2 : 1.08,
         ),
         children: const [
           TextSpan(
@@ -372,8 +402,7 @@ class _DownloadButtonState extends State<_DownloadButton> {
 
   @override
   Widget build(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
-    final fullWidth = _BP.isMobile(w);
+    final fullWidth = widget.isMobile && MediaQuery.of(context).size.width < 500;
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -381,9 +410,8 @@ class _DownloadButtonState extends State<_DownloadButton> {
       onExit:  (_) => setState(() => _hovered = false),
       child: GestureDetector(
         onTap: widget.onTap,
-        child: AnimatedScale(
-          scale: _hovered ? 1.025 : 1.0,
-          duration: const Duration(milliseconds: 160),
+        child: Transform.scale(
+          scale: _hovered ? 1.02 : 1.0,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 150),
             width: fullWidth ? double.infinity : null,
@@ -438,9 +466,10 @@ class _InstallHint extends StatelessWidget {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: const [
           Icon(Icons.info_outline_rounded, size: 12, color: _kTextMuted),
-          SizedBox(width: 14),
+          SizedBox(width: 10),
           Flexible(
             child: Text.rich(
               TextSpan(
@@ -490,9 +519,15 @@ class _PlatformsSection extends StatelessWidget {
     final w        = MediaQuery.of(context).size.width;
     final hPad     = _BP.hPad(w);
     final isMobile = _BP.isMobile(w);
+    final isTablet = _BP.isTablet(w);
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(hPad, 0, hPad, isMobile ? _S.xl : _S.xxl),
+      padding: EdgeInsets.fromLTRB(
+        hPad,
+        0,
+        hPad,
+        isMobile ? _S.xl : isTablet ? _S.xl : _S.xxl,
+      ),
       child: Column(
         children: [
           Row(children: const [
@@ -507,7 +542,7 @@ class _PlatformsSection extends StatelessWidget {
           ]),
           const SizedBox(height: 14),
           Wrap(
-            spacing: 8,
+            spacing: 12,
             runSpacing: 8,
             alignment: WrapAlignment.center,
             children: _items
@@ -568,17 +603,18 @@ class _Footer extends StatelessWidget {
   Widget build(BuildContext context) {
     final w         = MediaQuery.of(context).size.width;
     final isMobile  = _BP.isMobile(w);
+    final isTablet  = _BP.isTablet(w);
     final hPad      = _BP.hPad(w);
     final bottomSafe = MediaQuery.of(context).padding.bottom;
 
     return Container(
-      padding: EdgeInsets.fromLTRB(hPad, 14, hPad, bottomSafe + _S.md),
+      padding: EdgeInsets.fromLTRB(hPad, isMobile ? 14 : 18, hPad, bottomSafe + (isMobile ? _S.md : _S.lg)),
       decoration: const BoxDecoration(
         border: Border(top: BorderSide(color: _kBorderFaint)),
       ),
       child: isMobile
           ? _FooterMobile(onGitHubTap: onGitHubTap, onPrivacyTap: onPrivacyTap)
-          : _FooterDesktop(onGitHubTap: onGitHubTap, onPrivacyTap: onPrivacyTap),
+          : _FooterDesktop(onGitHubTap: onGitHubTap, onPrivacyTap: onPrivacyTap, compact: isTablet),
     );
   }
 }
@@ -597,10 +633,11 @@ class _FooterMobile extends StatelessWidget {
         const SizedBox(height: 8),
         Wrap(
           alignment: WrapAlignment.center,
-          spacing: 18,
-          runSpacing: 4,
+          spacing: 12,
+          runSpacing: 8,
           children: [
             _FooterLink(label: 'GitHub',  onTap: onGitHubTap),
+            _FooterLink(label: 'Privacy', onTap: onPrivacyTap),
 
           ],
         ),
@@ -618,10 +655,29 @@ class _FooterMobile extends StatelessWidget {
 class _FooterDesktop extends StatelessWidget {
   final VoidCallback onGitHubTap;
   final VoidCallback onPrivacyTap;
-  const _FooterDesktop({required this.onGitHubTap, required this.onPrivacyTap});
+  final bool compact;
+  const _FooterDesktop({required this.onGitHubTap, required this.onPrivacyTap, required this.compact});
 
   @override
   Widget build(BuildContext context) {
+    if (compact) {
+      return Wrap(
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 12,
+        runSpacing: 8,
+        children: [
+          const _Logo(iconSize: 22),
+          const Text(
+            '© 2026 — built for developers',
+            style: TextStyle(fontSize: 11, color: _kTextHint),
+          ),
+          _FooterLink(label: 'GitHub',  onTap: onGitHubTap),
+          _FooterLink(label: 'Privacy', onTap: onPrivacyTap),
+        ],
+      );
+    }
+
     return Row(
       children: [
         const _Logo(iconSize: 22),
@@ -632,6 +688,8 @@ class _FooterDesktop extends StatelessWidget {
         ),
         const Spacer(),
         _FooterLink(label: 'GitHub',  onTap: onGitHubTap),
+        const SizedBox(width: 14),
+        _FooterLink(label: 'Privacy', onTap: onPrivacyTap),
       ],
     );
   }
