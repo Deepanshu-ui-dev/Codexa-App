@@ -48,20 +48,40 @@ class LandingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // FIX: Use LayoutBuilder + ConstrainedBox so the Column fills the viewport
+    // height exactly — eliminating the phantom gap that appeared below the footer.
     return Scaffold(
       backgroundColor: _kBg,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _NavBar(onPortfolioTap: () => _launch(AppLinks.developerWebsiteUrl)),
-            _HeroSection(onDownload: () => _launch(AppLinks.androidDownloadUrl)),
-            const _PlatformsSection(),
-            _Footer(
-              onGitHubTap: () => _launch(AppLinks.githubRepoUrl),
-              onPrivacyTap: () => _launch(AppLinks.privacyUrl),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              // Ensure the column is at least as tall as the visible area so
+              // the footer sits flush at the bottom on short content, while
+              // still scrolling naturally on tall content.
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
+                child: Column(
+                  children: [
+                    _NavBar(
+                      onPortfolioTap: () => _launch(AppLinks.developerWebsiteUrl),
+                    ),
+                    _HeroSection(
+                      onDownload: () => _launch(AppLinks.androidDownloadUrl),
+                    ),
+                    const _PlatformsSection(),
+                    // Spacer pushes footer to the bottom when content is short
+                    const Spacer(),
+                    _Footer(
+                      onGitHubTap: () => _launch(AppLinks.githubRepoUrl),
+                      onPrivacyTap: () => _launch(AppLinks.privacyUrl),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -183,14 +203,17 @@ class _HeroSection extends StatelessWidget {
     final isMobile  = _BP.isMobile(w);
     final isDesktop = _BP.isDesktop(w);
 
-    final double hPad     = isMobile ? 20.0 : 28.0;
-    final double topPad   = isMobile ? 52.0 : isDesktop ? 100.0 : 80.0;
-    final double titleSize = isMobile ? 34.0 : isDesktop ? 64.0 : 48.0;
-    final double subtitleSize = isMobile ? 14.0 : 15.0;
-    final double maxSubtitleWidth = isMobile ? double.infinity : 420.0;
+    final double hPad          = isMobile ? 20.0 : 28.0;
+    final double topPad        = isMobile ? 52.0 : isDesktop ? 100.0 : 80.0;
+    // FIX: bottom padding was 28 — reduced to 0 so there is no extra gap
+    // between the hero and the platforms section.
+    final double bottomPad     = 0.0;
+    final double titleSize     = isMobile ? 34.0 : isDesktop ? 64.0 : 48.0;
+    final double subtitleSize  = isMobile ? 14.0 : 15.0;
+    final double maxSubtitleW  = isMobile ? double.infinity : 420.0;
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(hPad, topPad, hPad, 28),
+      padding: EdgeInsets.fromLTRB(hPad, topPad, hPad, bottomPad),
       child: Column(
         children: [
           _VersionBadge(),
@@ -222,7 +245,7 @@ class _HeroSection extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: maxSubtitleWidth),
+            constraints: BoxConstraints(maxWidth: maxSubtitleW),
             child: Text(
               'Track LeetCode, Codeforces, CodeChef and more — one clean dashboard, zero clutter.',
               textAlign: TextAlign.center,
@@ -237,7 +260,6 @@ class _HeroSection extends StatelessWidget {
           SizedBox(height: isMobile ? 28.0 : 34.0),
           _DownloadButton(onTap: onDownload),
           const SizedBox(height: 10),
-          // On very small screens, wrap the hint text
           isMobile ? const _InstallHintWrapped() : const _InstallHint(),
         ],
       ),
@@ -429,11 +451,11 @@ class _PlatformsSection extends StatelessWidget {
   const _PlatformsSection({super.key});
 
   static const _items = [
-    ('LeetCode', Color(0xFF4CAF50)),
-    ('Codeforces', _kAccent),
-    ('CodeChef', Color(0xFFF59E0B)),
-    ('HackerRank', Color(0xFF06B6D4)),
-    ('GitHub', Color(0x80FFFFFF)),
+    ('LeetCode',      Color(0xFF4CAF50)),
+    ('Codeforces',    _kAccent),
+    ('CodeChef',      Color(0xFFF59E0B)),
+    ('HackerRank',    Color(0xFF06B6D4)),
+    ('GitHub',        Color(0x80FFFFFF)),
     ('GeeksforGeeks', Color(0xFF4CAF50)),
   ];
 
@@ -443,7 +465,9 @@ class _PlatformsSection extends StatelessWidget {
     final hPad = _BP.isMobile(w) ? 16.0 : 24.0;
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(hPad, 16, hPad, 40),
+      // FIX: top padding increased slightly (16 → 24) to give visual
+      // breathing room after the hero hint box; bottom kept at 40.
+      padding: EdgeInsets.fromLTRB(hPad, 24, hPad, 40),
       child: Column(
         children: [
           Row(
@@ -521,7 +545,15 @@ class _Footer extends StatelessWidget {
     final hPad = isMobile ? 16.0 : 28.0;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: hPad, vertical: isMobile ? 20 : 16),
+      // FIX: add bottom safe-area padding so the footer never overlaps
+      // the system navigation bar on Android/iOS devices.
+      padding: EdgeInsets.fromLTRB(
+        hPad,
+        isMobile ? 20 : 16,
+        hPad,
+        (isMobile ? 20.0 : 16.0) +
+            MediaQuery.of(context).padding.bottom,
+      ),
       decoration: const BoxDecoration(
         border: Border(top: BorderSide(color: _kBorderFaint)),
       ),
@@ -541,7 +573,8 @@ class _Footer extends StatelessWidget {
 class _FooterDesktop extends StatelessWidget {
   final VoidCallback onGitHubTap;
   final VoidCallback onPrivacyTap;
-  const _FooterDesktop({required this.onGitHubTap, required this.onPrivacyTap, super.key});
+  const _FooterDesktop(
+      {required this.onGitHubTap, required this.onPrivacyTap, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -555,7 +588,6 @@ class _FooterDesktop extends StatelessWidget {
         ),
         const Spacer(),
         _FooterLink(label: 'GitHub', onTap: onGitHubTap),
-      
       ],
     );
   }
@@ -564,7 +596,8 @@ class _FooterDesktop extends StatelessWidget {
 class _FooterMobile extends StatelessWidget {
   final VoidCallback onGitHubTap;
   final VoidCallback onPrivacyTap;
-  const _FooterMobile({required this.onGitHubTap, required this.onPrivacyTap, super.key});
+  const _FooterMobile(
+      {required this.onGitHubTap, required this.onPrivacyTap, super.key});
 
   @override
   Widget build(BuildContext context) {
