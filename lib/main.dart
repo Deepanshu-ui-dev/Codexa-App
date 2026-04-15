@@ -51,37 +51,29 @@ class LandingScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: _kBg,
       resizeToAvoidBottomInset: false,
-      // FIX: Remove LayoutBuilder + SingleChildScrollView + IntrinsicHeight + Spacer combo.
-      // Use a simple Column with mainAxisSize.min so the footer hugs the content
-      // and doesn't float on empty space.
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _NavBar(
-            onPortfolioTap: () => _launch(AppLinks.developerWebsiteUrl),
-          ),
-          // FIX: Wrap the scrollable content (hero + platforms) in an Expanded
-          // SingleChildScrollView so it fills available space without pushing
-          // the footer down via a Spacer.
-          Expanded(
-            child: SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _HeroSection(
-                    onDownload: () => _launch(AppLinks.androidDownloadUrl),
-                  ),
-                  const _PlatformsSection(),
-                ],
-              ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _NavBar(
+                  onPortfolioTap: () =>
+                      _launch(AppLinks.developerWebsiteUrl),
+                ),
+                _HeroSection(
+                  onDownload: () => _launch(AppLinks.androidDownloadUrl),
+                ),
+                const _PlatformsSection(),
+                _Footer(
+                  onGitHubTap: () => _launch(AppLinks.githubRepoUrl),
+                  onPrivacyTap: () => _launch(AppLinks.privacyUrl),
+                ),
+              ],
             ),
-          ),
-          _Footer(
-            onGitHubTap: () => _launch(AppLinks.githubRepoUrl),
-            onPrivacyTap: () => _launch(AppLinks.privacyUrl),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -206,8 +198,6 @@ class _HeroSection extends StatelessWidget {
 
     final double hPad         = isMobile ? 20.0 : 28.0;
     final double topPad       = isMobile ? 52.0 : isDesktop ? 100.0 : 80.0;
-    // FIX: Reduce bottom padding — was 0 which caused visual imbalance with
-    // the platforms section sitting too close.
     final double bottomPad    = isMobile ? 32.0 : 48.0;
     final double titleSize    = isMobile ? 34.0 : isDesktop ? 64.0 : 48.0;
     final double subtitleSize = isMobile ? 14.0 : 15.0;
@@ -417,7 +407,8 @@ class _InstallHintWrapped extends StatelessWidget {
         children: const [
           Padding(
             padding: EdgeInsets.only(top: 1),
-            child: Icon(Icons.info_outline_rounded, size: 12, color: _kTextMuted),
+            child:
+                Icon(Icons.info_outline_rounded, size: 12, color: _kTextMuted),
           ),
           SizedBox(width: 8),
           Expanded(
@@ -468,9 +459,7 @@ class _PlatformsSection extends StatelessWidget {
     final hPad = _BP.isMobile(w) ? 16.0 : 24.0;
 
     return Padding(
-      // FIX: Increase bottom padding to give the platforms section proper
-      // breathing room above the footer.
-      padding: EdgeInsets.fromLTRB(hPad, 8, hPad, 48),
+      padding: EdgeInsets.fromLTRB(hPad, 8, hPad, 40),
       child: Column(
         children: [
           Row(
@@ -549,13 +538,9 @@ class _Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final w        = MediaQuery.of(context).size.width;
-    final isMobile = _BP.isMobile(w);
-    final hPad     = isMobile ? 16.0 : 28.0;
-    // FIX: Use padding.bottom (safe area inset from system) instead of
-    // viewPadding.bottom. On most Android devices viewPadding.bottom returns
-    // the full gesture-navigation bar height even when the keyboard is hidden,
-    // inflating the footer. padding.bottom respects the current inset state.
+    final w          = MediaQuery.of(context).size.width;
+    final isMobile   = _BP.isMobile(w);
+    final hPad       = isMobile ? 16.0 : 28.0;
     final bottomSafe = MediaQuery.of(context).padding.bottom;
 
     return Container(
