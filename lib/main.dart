@@ -341,7 +341,7 @@ class _VersionBadge extends StatelessWidget {
               shape: BoxShape.circle,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 14),
           const Text(
             'Version 1.1.1 — now live',
             style: TextStyle(
@@ -404,7 +404,7 @@ class _DownloadButtonState extends State<_DownloadButton> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
                 Icon(Icons.download_rounded, color: Color(0xFF060A1A), size: 17),
-                SizedBox(width: 10),
+                SizedBox(width: 14),
                 Text(
                   'Download for Android',
                   style: TextStyle(
@@ -440,7 +440,7 @@ class _InstallHint extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: const [
           Icon(Icons.info_outline_rounded, size: 12, color: _kTextMuted),
-          SizedBox(width: 8),
+          SizedBox(width: 14),
           Flexible(
             child: Text.rich(
               TextSpan(
@@ -497,12 +497,12 @@ class _PlatformsSection extends StatelessWidget {
         children: [
           Row(children: const [
             Expanded(child: Divider(color: _kBorderFaint, thickness: 0.5)),
-            SizedBox(width: 12),
+            SizedBox(width: 14),
             Text(
               'supported platforms',
               style: TextStyle(fontSize: 11, color: _kTextHint, letterSpacing: 0.3),
             ),
-            SizedBox(width: 12),
+            SizedBox(width: 14),
             Expanded(child: Divider(color: _kBorderFaint, thickness: 0.5)),
           ]),
           const SizedBox(height: 14),
@@ -542,7 +542,7 @@ class _Chip extends StatelessWidget {
             height: 5,
             decoration: BoxDecoration(color: dot, shape: BoxShape.circle),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 10),
           Text(
             label,
             style: const TextStyle(
@@ -601,7 +601,7 @@ class _FooterMobile extends StatelessWidget {
           runSpacing: 4,
           children: [
             _FooterLink(label: 'GitHub',  onTap: onGitHubTap),
-            _FooterLink(label: 'Privacy', onTap: onPrivacyTap),
+           
           ],
         ),
         const SizedBox(height: 8),
@@ -633,7 +633,7 @@ class _FooterDesktop extends StatelessWidget {
         const Spacer(),
         _FooterLink(label: 'GitHub',  onTap: onGitHubTap),
         const SizedBox(width: 16),
-        _FooterLink(label: 'Privacy', onTap: onPrivacyTap),
+       
       ],
     );
   }
