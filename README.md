@@ -82,7 +82,7 @@ Built for programmers preparing for placements, grinding DSA, or competing serio
 | Platform | Status | Notes |
 |---|---|---|
 | Android | ✅ Live | v1.1.1+ |
-| Web | ✅ Live | [codexa-app-delta.vercel.app](https://codexa-app-delta.vercel.app) |
+| Web | ✅ Live | [codexa-app-delta.vercel.app](https://codexa-app-six.vercel.app/) |
 | iOS | 🔄 Planned | TBD |
 
 ---
