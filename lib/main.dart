@@ -4,12 +4,12 @@ import 'package:url_launcher/url_launcher.dart';
 // ─── App Links ────────────────────────────────────────────────────────────────
 class AppLinks {
   static const androidDownloadUrl =
-      'https://ryzxalaibcwffoamznrg.supabase.co/storage/v1/object/public/app-releases/Codexa-1.1.1.apk';
+      'https://ryzxalaibcwffoamznrg.supabase.co/storage/v1/object/public/app-releases/Codexa-1.1.2.apk';
   static const developerWebsiteUrl = 'https://deepanshux.tech';
   static const githubRepoUrl =
       'https://github.com/Deepanshu-ui-dev/Codexa-App';
   static const privacyUrl =
-      'https://github.com/Deepanshu-ui-dev/Codexa-App/blob/main/PRIVACY.md';
+      'https://github.com/Deepanshu-ui-dev/Codexa-App';
 }
 
 // ─── Design Tokens ────────────────────────────────────────────────────────────
@@ -373,7 +373,7 @@ class _VersionBadge extends StatelessWidget {
           ),
           const SizedBox(width: 14),
           const Text(
-            'Version 1.1.1 — now live',
+            'Version 1.1.2 — now live',
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w500,
