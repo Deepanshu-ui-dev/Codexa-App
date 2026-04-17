@@ -15,7 +15,7 @@ Track progress · Analyze performance · Stay consistent
 
 <br/>
 
-[**Download APK**](https://ryzxalaibcwffoamznrg.supabase.co/storage/v1/object/public/app-releases/Codexa-1.1.1.apk) · [**Web App**](https://codexa-app-delta.vercel.app) · [**Developer Portfolio**](https://deepanshux.tech)
+[**Download APK**](https://ryzxalaibcwffoamznrg.supabase.co/storage/v1/object/public/app-releases/Codexa-1.1.2.apk) · [**Web App**](https://codexa-app-six.vercel.app/) · [**Developer Portfolio**](https://deepanshux.tech)
 
 </div>
 
