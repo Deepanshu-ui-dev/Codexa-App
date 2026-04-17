@@ -9,7 +9,7 @@
 Track progress · Analyze performance · Stay consistent
 
 [![Version](https://img.shields.io/badge/version-1.1.1-4D7EFF?style=flat-square)](https://github.com/Deepanshu-ui-dev/Codexa-App/releases)
-[![Platform](https://img.shields.io/badge/platform-Android-brightgreen?style=flat-square&logo=android)](https://ryzxalaibcwffoamznrg.supabase.co/storage/v1/object/public/app-releases/Codexa-1.1.1.apk)
+[![Platform](https://img.shields.io/badge/platform-Android-brightgreen?style=flat-square&logo=android)](https://ryzxalaibcwffoamznrg.supabase.co/storage/v1/object/public/app-releases/Codexa-1.1.2.apk)
 [![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?style=flat-square&logo=flutter)](https://flutter.dev)
 [![License](https://img.shields.io/badge/license-MIT-gray?style=flat-square)](LICENSE)
 
